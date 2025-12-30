@@ -8,9 +8,35 @@
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInAnonymously,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  onSnapshot,
+  query,
+  orderBy,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const q = query(
+  collection(db, "kyb_data"),
+  orderBy("timestamp", "asc")
+);
+
+onSnapshot(q, (snapshot) => {
+  const data = snapshot.docs.map(doc => doc.data());
+  dataHandler.onDataChanged(data);
+});
+
     
     const firebaseConfig = {
       apiKey: "AIzaSyBcjjoLZ3XU3SD8xgT6XmvZEVrmoV34A4M",
@@ -23,8 +49,12 @@
     };
     
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.auth = auth;
+window.db = db;
+
     
     window.firebaseAuth = auth;
     window.firebaseStorage = storage;
@@ -264,7 +294,7 @@
  <body class="h-full bg-gray-900 text-white overflow-auto">
   <div id="app" class="h-full w-full"></div>
   <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
-  <script>
+  <script type="module">
     const defaultConfig = {
       app_name: "KYB seen",
       tagline: "Tu comunidad BL/GL",
@@ -719,6 +749,11 @@
                             </div>
                             <div class="flex-1">
                               <p class="font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">${msg.username}</p>
+                              <img 
+  src="${msg.avatarUrl || 'https://api.dicebear.com/7.x/adventurer/png?seed=default'}"
+  class="w-8 h-8 rounded-full object-cover"
+/>
+
                               <p style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; opacity: 0.9;">${msg.message}</p>
                             </div>
                           </div>
@@ -961,6 +996,12 @@
               <h2 class="font-bold mb-1" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px;">${userName}</h2>
               ${!appState.isGuest ? `
                 <p class="opacity-70 mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${appState.currentUser.email}</p>
+                username: appState.currentUser.username,
+subname: appState.currentUser.subname,
+avatarUrl: appState.currentUser.avatarUrl,
+message,
+timestamp: serverTimestamp()
+
                 <button id="editProfileBtn" class="px-6 py-2 rounded-lg transition-all hover:opacity-80" style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid ${accentColor}; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">
                   Editar Perfil
                 </button>
@@ -1044,9 +1085,17 @@
           try {
             const { signInWithEmailAndPassword } = window.firebaseAuthFunctions;
             const userCredential = await signInWithEmailAndPassword(window.firebaseAuth, email, password);
-            appState.currentUser = { 
-              id: userCredential.user.uid, 
-              email: userCredential.user.email 
+          const result = await signInWithEmailAndPassword(auth, email, password);
+const user = result.user;
+
+appState.currentUser = {
+  id: user.uid,
+  email: user.email,
+  username: user.email.split("@")[0],
+  avatarUrl: "https://api.dicebear.com/7.x/adventurer/png?seed=" + user.uid,
+  subname: "fan de KYB"
+};
+
             };
             appState.isGuest = false;
             
@@ -1091,9 +1140,17 @@
           try {
             const { createUserWithEmailAndPassword } = window.firebaseAuthFunctions;
             const userCredential = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
-            appState.currentUser = { 
-              id: userCredential.user.uid, 
-              email: userCredential.user.email 
+            const result = await signInWithEmailAndPassword(auth, email, password);
+const user = result.user;
+
+appState.currentUser = {
+  id: user.uid,
+  email: user.email,
+  username: user.email.split("@")[0],
+  avatarUrl: "https://api.dicebear.com/7.x/adventurer/png?seed=" + user.uid,
+  subname: "fan de KYB"
+};
+
             };
             appState.isGuest = false;
             
@@ -1242,7 +1299,7 @@
             user_id: appState.currentUser.id,
             username: username,
             message: message,
-            timestamp: Date.now()
+            timestamp: serverTimestamp()
           });
           
           if (result.isOk) {
