@@ -373,8 +373,12 @@
     
     // Data handler for Canva SDK
     const dataHandler = {
-      onDataChanged(data) {
-        state.allRecords = data;
+  onDataChanged(data) {
+    // ❌ IGNORA Canva si estamos en GitHub
+    if (!window.dataSdk) return;
+
+    state.allRecords = data;
+
         
         if (state.currentView === 'home') {
           renderHome();
@@ -392,9 +396,10 @@
     async function initializeApp() {
       try {
         // Initialize Firestore SDK
-        if (db) {
-          await firestoreDataSdk.init(dataHandler);
-        }
+       if (db && !window.dataSdk) {
+  listenUserRecords();
+}
+
         
         // Initialize Canva SDK if available
         if (window.dataSdk) {
@@ -492,6 +497,7 @@
           if (user) {
             state.user = user;
             state.isGuest = false;
+            listenUserRecords()
             navigateTo('home');
           } else if (state.isGuest) {
             navigateTo('home');
