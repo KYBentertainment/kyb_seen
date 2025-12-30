@@ -374,11 +374,10 @@
     // Data handler for Canva SDK
     const dataHandler = {
   onDataChanged(data) {
-    // ❌ IGNORA Canva si estamos en GitHub
-    if (!window.dataSdk) return;
+    // ❌ NO dejes que Canva / SDK vacíe Firebase
+    if (!Array.isArray(data) || data.length === 0) return;
 
     state.allRecords = data;
-
         
         if (state.currentView === 'home') {
           renderHome();
@@ -396,11 +395,11 @@
     async function initializeApp() {
       try {
         // Initialize Firestore SDK
-       if (db && !window.dataSdk) {
-  listenUserRecords();
+      if (db && !window.dataSdk) {
+  // solo usa firestore en web normal
+  await firestoreDataSdk.init(dataHandler);
 }
 
-        
         // Initialize Canva SDK if available
         if (window.dataSdk) {
           await window.dataSdk.init(dataHandler);
@@ -497,7 +496,6 @@
           if (user) {
             state.user = user;
             state.isGuest = false;
-            listenUserRecords()
             navigateTo('home');
           } else if (state.isGuest) {
             navigateTo('home');
@@ -584,7 +582,7 @@
         e.preventDefault();
         
         if (!auth) {
-          showToast('Firebase no disponible. Intenta en Canva.', 'error');
+          showToast('Firebase no disponible. Intenta en Canva.', 'error', 3000);
           return;
         }
         
@@ -665,7 +663,7 @@
         e.preventDefault();
         
         if (!auth) {
-          showToast('Firebase no disponible. Intenta en Canva.', 'error');
+          showToast('Firebase no disponible. Intenta en Canva.', 'error', 3000);
           return;
         }
         
