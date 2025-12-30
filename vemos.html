@@ -238,7 +238,7 @@
           if (!db) return { isOk: false, isError: true, error: new Error('Database not available') };
           
           // Listen to real-time updates
-     db.collection('kyb_data').onSnapshot(...)
+          db.collection('kyb_data').onSnapshot((snapshot) => {
             const records = [];
             snapshot.forEach((doc) => {
               records.push({
@@ -393,29 +393,7 @@
       try {
         // Initialize Firestore SDK
         if (db) {
-          auth.onAuthStateChanged(async (user) => {   if (!user) return;    state.user = user;   state.isGuest = false;  auth.onAuthStateChanged(async (user) => {
-  if (!user) {
-    console.log('No user yet');
-    return;
-  }
-
-  console.log('User logged:', user.uid);
-
-  state.user = user;
-  state.isGuest = false;
-
-  await firestoreDataSdk.init(dataHandler);
-if (!state.user || !state.user.uid) {
-  console.error('Firestore init sin usuario');
-  return;
-}
-db.collection('kyb_data')
-  .where('user_profile', '==', state.user.uid)
-  .onSnapshot(...)
-
-  navigateTo('home');
-});
-  navigateTo('home'); });
+          await firestoreDataSdk.init(dataHandler);
         }
         
         // Initialize Canva SDK if available
