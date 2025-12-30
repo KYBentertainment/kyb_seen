@@ -164,8 +164,13 @@
     };
     
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    let auth = null;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      auth = firebase.auth();
+    } catch (error) {
+      console.log('Firebase not available, using fallback mode');
+    }
     
     // Global state
     const state = {
@@ -198,7 +203,7 @@
     
     // Series data
     const SERIES_DATA = [
-      { id: 's1', title: 'Bad Buddy', genre: 'BL', country: 'Thailand', rating: 9.2, votes: 1547, year: 2021, episodes: 12, duration: '45min', image: 'https://dramarambles.com/wp-content/uploads/2022/05/bad-buddy-review-cover.jpg', synopsis: 'Pat y Pran, hijos de familias rivales, desarrollan una amistad secreta que se convierte en amor mientras navegan las expectativas familiares.' },
+      { id: 's1', title: 'Bad Buddy', genre: 'BL', country: 'Thailand', rating: 9.2, votes: 1547, year: 2021, episodes: 12, duration: '45min', image: 'https://dramarambles.com/wp-content/uploads/2022/05/bad-buddy-review-cover.jpg''https://upload.wikimedia.org/wikipedia/en/b/b7/Bad_Buddy_Series_2021_poster.jpg', synopsis: 'Pat y Pran, hijos de familias rivales, desarrollan una amistad secreta que se convierte en amor mientras navegan las expectativas familiares.' },
       { id: 's2', title: 'Semantic Error', genre: 'BL', country: 'Korea', rating: 9.0, votes: 1823, year: 2022, episodes: 8, duration: '25min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Semantic+Error', synopsis: 'Un estudiante de informática obsesionado con la lógica conoce a un diseñador artístico, desafiando su visión racional del mundo.' },
       { id: 's3', title: 'GAP The Series', genre: 'GL', country: 'Thailand', rating: 8.8, votes: 1234, year: 2022, episodes: 12, duration: '50min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=GAP+Series', synopsis: 'Sam, CEO de una empresa, se enamora de Mon, su nueva asistente, desafiando las normas sociales y corporativas.' },
       { id: 's4', title: 'Cherry Magic', genre: 'BL', country: 'Japan', rating: 8.9, votes: 2156, year: 2020, episodes: 12, duration: '24min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Cherry+Magic', synopsis: 'Adachi, un oficinista virgen de 30 años, descubre que puede leer mentes y se entera de que su compañero popular está enamorado de él.' },
@@ -222,8 +227,8 @@
       {
         series: 'Bad Buddy',
         characters: [
-          { id: 'bb1', name: 'Pat', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0kT66qv0pwVajb3LvgPpqcxJxYIbRPLgbug&s' },
-          { id: 'bb2', name: 'Pran', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRODt6kOhWI6Jl3yTvZIZP-4hU2kihGVlF6gA&s' },
+          { id: 'bb1', name: 'Pat', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTxB4uTe1VytowzE5W0Lrmk0mFNzUISS-9nA&s' },
+          { id: 'bb2', name: 'Pran', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=PR' },
           { id: 'bb3', name: 'Ink', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=I' },
           { id: 'bb4', name: 'Pa', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=PA' }
         ]
@@ -305,102 +310,112 @@
     // Initialize app
     async function initializeApp() {
       try {
-        await window.dataSdk.init(dataHandler);
-        await window.elementSdk.init({
-          defaultConfig,
-          onConfigChange: async (config) => {
-            const titleEl = document.getElementById('app-title');
-            if (titleEl) titleEl.textContent = config.app_title || defaultConfig.app_title;
-            
-            const welcomeEl = document.getElementById('welcome-message');
-            if (welcomeEl) welcomeEl.textContent = config.welcome_message || defaultConfig.welcome_message;
-            
-            const popularEl = document.getElementById('popular-title');
-            if (popularEl) popularEl.textContent = config.popular_title || defaultConfig.popular_title;
-            
-            const blEl = document.getElementById('bl-section-title');
-            if (blEl) blEl.textContent = config.bl_section_title || defaultConfig.bl_section_title;
-            
-            const glEl = document.getElementById('gl-section-title');
-            if (glEl) glEl.textContent = config.gl_section_title || defaultConfig.gl_section_title;
-            
-            const loginTitleEl = document.getElementById('login-title');
-            if (loginTitleEl) loginTitleEl.textContent = config.login_title || defaultConfig.login_title;
-            
-            const registerTitleEl = document.getElementById('register-title');
-            if (registerTitleEl) registerTitleEl.textContent = config.register_title || defaultConfig.register_title;
-            
-            const guestBtnEl = document.getElementById('guest-button');
-            if (guestBtnEl) guestBtnEl.textContent = config.guest_button || defaultConfig.guest_button;
-          },
-          mapToCapabilities: (config) => ({
-            recolorables: [
-              {
-                get: () => config.primary_color || defaultConfig.primary_color,
-                set: (value) => {
-                  config.primary_color = value;
-                  window.elementSdk.setConfig({ primary_color: value });
+        if (window.dataSdk) {
+          await window.dataSdk.init(dataHandler);
+        }
+        
+        if (window.elementSdk) {
+          await window.elementSdk.init({
+            defaultConfig,
+            onConfigChange: async (config) => {
+              const titleEl = document.getElementById('app-title');
+              if (titleEl) titleEl.textContent = config.app_title || defaultConfig.app_title;
+              
+              const welcomeEl = document.getElementById('welcome-message');
+              if (welcomeEl) welcomeEl.textContent = config.welcome_message || defaultConfig.welcome_message;
+              
+              const popularEl = document.getElementById('popular-title');
+              if (popularEl) popularEl.textContent = config.popular_title || defaultConfig.popular_title;
+              
+              const blEl = document.getElementById('bl-section-title');
+              if (blEl) blEl.textContent = config.bl_section_title || defaultConfig.bl_section_title;
+              
+              const glEl = document.getElementById('gl-section-title');
+              if (glEl) glEl.textContent = config.gl_section_title || defaultConfig.gl_section_title;
+              
+              const loginTitleEl = document.getElementById('login-title');
+              if (loginTitleEl) loginTitleEl.textContent = config.login_title || defaultConfig.login_title;
+              
+              const registerTitleEl = document.getElementById('register-title');
+              if (registerTitleEl) registerTitleEl.textContent = config.register_title || defaultConfig.register_title;
+              
+              const guestBtnEl = document.getElementById('guest-button');
+              if (guestBtnEl) guestBtnEl.textContent = config.guest_button || defaultConfig.guest_button;
+            },
+            mapToCapabilities: (config) => ({
+              recolorables: [
+                {
+                  get: () => config.primary_color || defaultConfig.primary_color,
+                  set: (value) => {
+                    config.primary_color = value;
+                    window.elementSdk.setConfig({ primary_color: value });
+                  }
+                },
+                {
+                  get: () => config.background_color || defaultConfig.background_color,
+                  set: (value) => {
+                    config.background_color = value;
+                    window.elementSdk.setConfig({ background_color: value });
+                  }
+                },
+                {
+                  get: () => config.card_color || defaultConfig.card_color,
+                  set: (value) => {
+                    config.card_color = value;
+                    window.elementSdk.setConfig({ card_color: value });
+                  }
+                },
+                {
+                  get: () => config.text_color || defaultConfig.text_color,
+                  set: (value) => {
+                    config.text_color = value;
+                    window.elementSdk.setConfig({ text_color: value });
+                  }
+                },
+                {
+                  get: () => config.secondary_color || defaultConfig.secondary_color,
+                  set: (value) => {
+                    config.secondary_color = value;
+                    window.elementSdk.setConfig({ secondary_color: value });
+                  }
                 }
-              },
-              {
-                get: () => config.background_color || defaultConfig.background_color,
-                set: (value) => {
-                  config.background_color = value;
-                  window.elementSdk.setConfig({ background_color: value });
-                }
-              },
-              {
-                get: () => config.card_color || defaultConfig.card_color,
-                set: (value) => {
-                  config.card_color = value;
-                  window.elementSdk.setConfig({ card_color: value });
-                }
-              },
-              {
-                get: () => config.text_color || defaultConfig.text_color,
-                set: (value) => {
-                  config.text_color = value;
-                  window.elementSdk.setConfig({ text_color: value });
-                }
-              },
-              {
-                get: () => config.secondary_color || defaultConfig.secondary_color,
-                set: (value) => {
-                  config.secondary_color = value;
-                  window.elementSdk.setConfig({ secondary_color: value });
-                }
-              }
-            ],
-            borderables: [],
-            fontEditable: undefined,
-            fontSizeable: undefined
-          }),
-          mapToEditPanelValues: (config) => new Map([
-            ['app_title', config.app_title || defaultConfig.app_title],
-            ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
-            ['popular_title', config.popular_title || defaultConfig.popular_title],
-            ['bl_section_title', config.bl_section_title || defaultConfig.bl_section_title],
-            ['gl_section_title', config.gl_section_title || defaultConfig.gl_section_title],
-            ['login_title', config.login_title || defaultConfig.login_title],
-            ['register_title', config.register_title || defaultConfig.register_title],
-            ['guest_button', config.guest_button || defaultConfig.guest_button]
-          ])
-        });
+              ],
+              borderables: [],
+              fontEditable: undefined,
+              fontSizeable: undefined
+            }),
+            mapToEditPanelValues: (config) => new Map([
+              ['app_title', config.app_title || defaultConfig.app_title],
+              ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
+              ['popular_title', config.popular_title || defaultConfig.popular_title],
+              ['bl_section_title', config.bl_section_title || defaultConfig.bl_section_title],
+              ['gl_section_title', config.gl_section_title || defaultConfig.gl_section_title],
+              ['login_title', config.login_title || defaultConfig.login_title],
+              ['register_title', config.register_title || defaultConfig.register_title],
+              ['guest_button', config.guest_button || defaultConfig.guest_button]
+            ])
+          });
+        }
       } catch (error) {
         console.error('SDK initialization error:', error);
       }
       
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          state.user = user;
-          state.isGuest = false;
-          navigateTo('home');
-        } else if (state.isGuest) {
-          navigateTo('home');
-        } else {
-          navigateTo('login');
-        }
-      });
+      if (auth) {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            state.user = user;
+            state.isGuest = false;
+            navigateTo('home');
+          } else if (state.isGuest) {
+            navigateTo('home');
+          } else {
+            navigateTo('login');
+          }
+        });
+      } else {
+        // Fallback if Firebase is not available (like on Vercel without SDK)
+        navigateTo('login');
+      }
     }
     
     // Navigation
@@ -475,6 +490,12 @@
       
       document.getElementById('login-form').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        if (!auth) {
+          showToast('Firebase no disponible. Intenta en Canva.', 'error');
+          return;
+        }
+        
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const btn = e.target.querySelector('button[type="submit"]');
@@ -550,6 +571,12 @@
       
       document.getElementById('register-form').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        if (!auth) {
+          showToast('Firebase no disponible. Intenta en Canva.', 'error');
+          return;
+        }
+        
         const email = document.getElementById('reg-email').value;
         const password = document.getElementById('reg-password').value;
         const username = document.getElementById('reg-username').value;
@@ -567,20 +594,24 @@
           const userCredential = await auth.createUserWithEmailAndPassword(email, password);
           await userCredential.user.updateProfile({ displayName: username });
           
-          const createResult = await window.dataSdk.create({
-            user_profile: userCredential.user.uid,
-            username: username,
-            subname: '',
-            avatar_series_id: '',
-            avatar_character_id: '',
-            avatar_url: '',
-            email: email
-          });
-          
-          if (createResult.isOk) {
-            showToast('¡Cuenta creada con éxito!', 'success');
+          if (window.dataSdk && state.allRecords.length < 999) {
+            const createResult = await window.dataSdk.create({
+              user_profile: userCredential.user.uid,
+              username: username,
+              subname: '',
+              avatar_series_id: '',
+              avatar_character_id: '',
+              avatar_url: '',
+              email: email
+            });
+            
+            if (createResult.isOk) {
+              showToast('¡Cuenta creada con éxito!', 'success');
+            } else {
+              showToast('Cuenta creada, pero error al crear perfil', 'info');
+            }
           } else {
-            showToast('Error al crear perfil', 'error');
+            showToast('¡Cuenta creada con éxito!', 'success');
           }
         } catch (error) {
           showToast(error.message, 'error');
@@ -848,7 +879,7 @@
               <h1 class="text-4xl md:text-5xl font-bold mb-2">${series.title}</h1>
               <div class="flex items-center gap-3 flex-wrap">
                 <span class="${series.genre === 'BL' ? 'genre-badge-bl' : 'genre-badge-gl'}">${series.genre}</span>
-                <span class="text-sm text-gray-300">${series.country} • ${series.year}</span>
+                <span class="text-sm text-gray-300">${series.country} �� ${series.year}</span>
                 <span class="text-sm text-gray-300">${series.episodes} eps • ${series.duration}</span>
               </div>
             </div>
@@ -966,6 +997,11 @@
           return;
         }
         
+        if (!window.dataSdk) {
+          showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+          return;
+        }
+        
         const btn = document.getElementById('my-list-btn');
         btn.disabled = true;
         
@@ -1004,6 +1040,11 @@
       document.querySelectorAll('.rating-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
           if (state.isGuest) return;
+          
+          if (!window.dataSdk) {
+            showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+            return;
+          }
           
           const rating = parseInt(btn.dataset.rating);
           btn.disabled = true;
@@ -1044,6 +1085,12 @@
       
       document.getElementById('chat-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        if (!window.dataSdk) {
+          showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+          return;
+        }
+        
         const input = document.getElementById('chat-input');
         const message = input.value.trim();
         
@@ -1080,6 +1127,11 @@
         btn.addEventListener('click', async () => {
           if (state.isGuest) {
             showToast('Inicia sesión para marcar episodios', 'info');
+            return;
+          }
+          
+          if (!window.dataSdk) {
+            showToast('Data SDK no disponible. Intenta en Canva.', 'error');
             return;
           }
           
@@ -1621,6 +1673,8 @@
       document.getElementById('back-btn').addEventListener('click', () => navigateTo('home'));
       
       document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        if (!auth) return;
+        
         await auth.signOut();
         state.user = null;
         state.isGuest = false;
@@ -1656,6 +1710,11 @@
       });
       
       document.getElementById('save-profile-btn')?.addEventListener('click', async () => {
+        if (!window.dataSdk) {
+          showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+          return;
+        }
+        
         const newUsername = document.getElementById('username-input').value.trim();
         const newSubname = document.getElementById('subname-input').value.trim();
         
@@ -1750,6 +1809,11 @@
       
       modal.querySelectorAll('.avatar-option').forEach(btn => {
         btn.addEventListener('click', async () => {
+          if (!window.dataSdk) {
+            showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+            return;
+          }
+          
           const series = btn.dataset.series;
           const charId = btn.dataset.charId;
           const url = btn.dataset.url;
@@ -1804,5 +1868,5 @@
     // Start app
     initializeApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b6363bb14571a50',t:'MTc2NzExNzEzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b637f91b1311a50',t:'MTc2NzExODI3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
