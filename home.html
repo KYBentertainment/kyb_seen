@@ -284,7 +284,7 @@
     
     // Series data
     const SERIES_DATA = [
-      { id: 's1', title: 'Bad Buddy', genre: 'BL', country: 'Thailand', rating: 9.2, votes: 1547, year: 2021, episodes: 12, duration: '45min', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCE_8ECPAqfER-cijhpQwCPjNs_GMw7UYmfA&s', synopsis: 'Pat y Pran, hijos de familias rivales, desarrollan una amistad secreta que se convierte en amor mientras navegan las expectativas familiares.' },
+      { id: 's1', title: 'Bad Buddy', genre: 'BL', country: 'Thailand', rating: 9.2, votes: 1547, year: 2021, episodes: 12, duration: '45min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Bad+Buddy', synopsis: 'Pat y Pran, hijos de familias rivales, desarrollan una amistad secreta que se convierte en amor mientras navegan las expectativas familiares.' },
       { id: 's2', title: 'Semantic Error', genre: 'BL', country: 'Korea', rating: 9.0, votes: 1823, year: 2022, episodes: 8, duration: '25min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Semantic+Error', synopsis: 'Un estudiante de informática obsesionado con la l����gica conoce a un diseñador artístico, desafiando su visión racional del mundo.' },
       { id: 's3', title: 'GAP The Series', genre: 'GL', country: 'Thailand', rating: 8.8, votes: 1234, year: 2022, episodes: 12, duration: '50min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=GAP+Series', synopsis: 'Sam, CEO de una empresa, se enamora de Mon, su nueva asistente, desafiando las normas sociales y corporativas.' },
       { id: 's4', title: 'Cherry Magic', genre: 'BL', country: 'Japan', rating: 8.9, votes: 2156, year: 2020, episodes: 12, duration: '24min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Cherry+Magic', synopsis: 'Adachi, un oficinista virgen de 30 años, descubre que puede leer mentes y se entera de que su compañero popular está enamorado de él.' },
@@ -308,7 +308,7 @@
       {
         series: 'Bad Buddy',
         characters: [
-          { id: 'bb1', name: 'Pat', url: 'https://i.mydramalist.com/42rLd_7c.jpg' },
+          { id: 'bb1', name: 'Pat', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=P' },
           { id: 'bb2', name: 'Pran', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=PR' },
           { id: 'bb3', name: 'Ink', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=I' },
           { id: 'bb4', name: 'Pa', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=PA' }
@@ -1094,7 +1094,7 @@
         if (inMyList) {
           const record = state.allRecords.find(r => r.my_list_series_id === series.id && r.user_profile === state.user.uid);
           if (record) {
-            const result = await window.dataSdk.delete(record);
+            const result = await window.activeDataSdk.delete(record);
             if (result.isOk) {
               showToast('Eliminado de Mi Lista', 'success');
             } else {
@@ -1109,7 +1109,7 @@
             return;
           }
           
-          const result = await window.dataSdk.create({
+          const result = await window.activeDataSdk.create({
             my_list_series_id: series.id,
             user_profile: state.user.uid
           });
@@ -1127,8 +1127,8 @@
         btn.addEventListener('click', async () => {
           if (state.isGuest) return;
           
-          if (!window.dataSdk) {
-            showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+          if (!window.activeDataSdk) {
+            showToast('Base de datos no disponible', 'error');
             return;
           }
           
@@ -1139,7 +1139,7 @@
           
           if (existingRating) {
             existingRating.rating_value = rating;
-            const result = await window.dataSdk.update(existingRating);
+            const result = await window.activeDataSdk.update(existingRating);
             if (result.isOk) {
               showToast(`Calificación actualizada: ${rating}/10`, 'success');
             } else {
@@ -1153,7 +1153,7 @@
               return;
             }
             
-            const result = await window.dataSdk.create({
+            const result = await window.activeDataSdk.create({
               rating_series_id: series.id,
               rating_value: rating,
               user_profile: state.user.uid
@@ -1191,7 +1191,7 @@
         btn.disabled = true;
         btn.textContent = 'Enviando...';
         
-        const result = await window.dataSdk.create({
+        const result = await window.activeDataSdk.create({
           message_series_id: series.id,
           message_text: message,
           message_timestamp: Date.now(),
@@ -1216,8 +1216,8 @@
             return;
           }
           
-          if (!window.dataSdk) {
-            showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+          if (!window.activeDataSdk) {
+            showToast('Base de datos no disponible', 'error');
             return;
           }
           
@@ -1232,7 +1232,7 @@
           
           if (existingEpisode) {
             existingEpisode.watched = !existingEpisode.watched;
-            const result = await window.dataSdk.update(existingEpisode);
+            const result = await window.activeDataSdk.update(existingEpisode);
             if (!result.isOk) {
               showToast('Error al actualizar', 'error');
               btn.disabled = false;
@@ -1244,7 +1244,7 @@
               return;
             }
             
-            const result = await window.dataSdk.create({
+            const result = await window.activeDataSdk.create({
               episode_series_id: series.id,
               episode_number: epNum,
               watched: true,
@@ -1890,8 +1890,8 @@
       
       modal.querySelectorAll('.avatar-option').forEach(btn => {
         btn.addEventListener('click', async () => {
-          if (!window.dataSdk) {
-            showToast('Data SDK no disponible. Intenta en Canva.', 'error');
+          if (!window.activeDataSdk) {
+            showToast('Base de datos no disponible', 'error');
             return;
           }
           
@@ -1908,7 +1908,7 @@
             existingProfile.avatar_character_id = charId;
             existingProfile.avatar_url = url;
             
-            const result = await window.dataSdk.update(existingProfile);
+            const result = await window.activeDataSdk.update(existingProfile);
             
             if (result.isOk) {
               showToast('Avatar actualizado', 'success');
@@ -1924,7 +1924,7 @@
               return;
             }
             
-            const result = await window.dataSdk.create({
+            const result = await window.activeDataSdk.create({
               user_profile: state.user.uid,
               username: state.user.displayName || 'Usuario',
               subname: '',
@@ -1949,5 +1949,5 @@
     // Start app
     initializeApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b63cbb043e61a50',t:'MTc2NzEyMTM5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b63d232f5e51a50',t:'MTc2NzEyMTY1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
