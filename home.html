@@ -3,209 +3,27 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KYB seen</title>
+  <title>KYB Seen - BL/GL Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js"></script>
   <script src="/_sdk/data_sdk.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInAnonymously,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  updateDoc,
-  doc,
-  onSnapshot,
-  query,
-  orderBy,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const q = query(
-  collection(db, "kyb_data"),
-  orderBy("timestamp", "asc")
-);
-
-onSnapshot(q, (snapshot) => {
-  const data = snapshot.docs.map(doc => doc.data());
-  dataHandler.onDataChanged(data);
-});
-
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyBcjjoLZ3XU3SD8xgT6XmvZEVrmoV34A4M",
-      authDomain: "kyb-seen.firebaseapp.com",
-      projectId: "kyb-seen",
-      storageBucket: "kyb-seen.firebasestorage.app",
-      messagingSenderId: "916013840344",
-      appId: "1:916013840344:web:561274a6db9470a7ca64ad",
-      measurementId: "G-1C8ZDYR1JS"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.auth = auth;
-window.db = db;
-
-    
-    window.firebaseAuth = auth;
-    window.firebaseStorage = storage;
-    window.firebaseAuthFunctions = {
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut,
-      updateProfile
-    };
-    window.firebaseStorageFunctions = {
-      ref,
-      uploadBytes,
-      getDownloadURL
-    };
-  </script>
   <style>
     body {
       box-sizing: border-box;
     }
     
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
     * {
-      font-family: 'Inter', sans-serif;
-    }
-    
-    .fade-in {
-      animation: fadeIn 1.5s ease-in;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    .pulse-glow {
-      animation: pulseGlow 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
-      50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
-    }
-    
-    .hover-zoom {
-      transition: transform 0.3s ease;
-    }
-    
-    .hover-zoom:hover {
-      transform: scale(1.05);
-    }
-    
-    .ripple {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .ripple::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.5);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    
-    .ripple:active::after {
-      width: 300px;
-      height: 300px;
-    }
-    
-    .input-glow:focus {
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-      border-color: #10b981;
-    }
-    
-    .gradient-text {
-      background: linear-gradient(135deg, #10b981, #ec4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .series-card {
-      background: linear-gradient(180deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9));
-      backdrop-filter: blur(10px);
-    }
-    
-    .parallax-header {
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.3s ease-out;
-    }
-    
-    .chat-bubble {
-      animation: slideUp 0.3s ease-out;
-    }
-    
-    @keyframes slideUp {
-      from { 
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to { 
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .star-rating {
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    
-    .star-rating:hover {
-      transform: scale(1.2);
-    }
-    
-    .loader {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(16, 185, 129, 0.2);
-      border-top-color: #10b981;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .eye-icon {
-      transition: all 0.3s ease;
-    }
-    
-    .eye-icon.watched {
-      color: #10b981;
-      transform: scale(1.1);
-    }
-    
-    .smooth-scroll {
-      scroll-behavior: smooth;
+      font-family: 'Space Grotesk', sans-serif;
     }
     
     ::-webkit-scrollbar {
       width: 8px;
+      height: 8px;
     }
     
     ::-webkit-scrollbar-track {
@@ -221,1431 +39,1455 @@ window.db = db;
       background: #059669;
     }
     
-    .notification-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #ef4444;
-      border-radius: 50%;
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      animation: pulse 2s infinite;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     
-    .avatar-option {
-      cursor: pointer;
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+    }
+    
+    @keyframes ripple {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(4); opacity: 0; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .slide-up {
+      animation: slideUp 0.3s ease;
+    }
+    
+    .slide-down {
+      animation: slideDown 0.3s ease;
+    }
+    
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+    
+    .glassmorphism {
+      background: rgba(31, 41, 55, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .card-hover {
       transition: all 0.3s ease;
-      border: 3px solid transparent;
     }
     
-    .avatar-option:hover {
-      transform: scale(1.1);
+    .card-hover:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
     }
     
-    .avatar-option.selected {
-      border-color: #10b981;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    .btn-gradient-bl-gl {
+      background: linear-gradient(135deg, #10b981, #ec4899);
     }
     
-    .modal-overlay {
-      background-color: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(4px);
+    .btn-gradient-bl-gl:hover {
+      opacity: 0.85;
     }
     
-    .toast {
-      animation: toastSlide 0.3s ease-out;
+    .avatar-gradient {
+      background: linear-gradient(135deg, #10b981, rgba(236, 72, 153, 0.8));
     }
     
-    @keyframes toastSlide {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .genre-badge-bl {
+      background: #ec4899;
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
     }
     
-    .desktop-container {
-      max-width: 1400px;
-      margin: 0 auto;
+    .genre-badge-gl {
+      background: #a855f7;
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
     }
     
-    @media (min-width: 768px) {
-      .desktop-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      }
-      
-      .desktop-layout {
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        gap: 2rem;
-      }
+    .ripple-effect {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ripple-effect::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      pointer-events: none;
+    }
+    
+    .ripple-effect:active::after {
+      animation: ripple 0.6s ease-out;
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
  </head>
- <body class="h-full bg-gray-900 text-white overflow-auto">
+ <body class="h-full w-full bg-gray-900 text-white overflow-x-hidden">
   <div id="app" class="h-full w-full"></div>
-  <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
-  <script type="module">
-    const defaultConfig = {
-      app_name: "KYB seen",
-      tagline: "Tu comunidad BL/GL",
-      popular_title: "Popular",
-      bl_title: "BL",
-      gl_title: "GL",
-      background_color: "#111827",
-      card_color: "#1f2937",
-      text_color: "#ffffff",
-      accent_color: "#10b981",
-      secondary_accent: "#ec4899",
-      login_button: "Iniciar Sesión",
-      signup_button: "Crear Cuenta",
-      guest_button: "Entrar como Invitado",
-      font_family: "Inter",
-      font_size: 16
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBcjjoLZ3XU3SD8xgT6XmvZEVrmoV34A4M",
+      authDomain: "kyb-seen.firebaseapp.com",
+      projectId: "kyb-seen",
+      storageBucket: "kyb-seen.firebasestorage.app",
+      messagingSenderId: "916013840344",
+      appId: "1:916013840344:web:561274a6db9470a7ca64ad",
+      measurementId: "G-1C8ZDYR1JS"
     };
     
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    
+    // Global state
+    const state = {
+      user: null,
+      currentView: 'home',
+      currentSeries: null,
+      allRecords: [],
+      isGuest: false
+    };
+    
+    // Default config
+    const defaultConfig = {
+      app_title: "KYB Seen",
+      welcome_message: "Descubre y rastrea tus series BL/GL favoritas",
+      popular_title: "Popular",
+      bl_section_title: "Series BL",
+      gl_section_title: "Series GL",
+      login_title: "Bienvenido",
+      register_title: "Crear Cuenta",
+      guest_button: "Continuar como Invitado",
+      primary_color: "#10b981",
+      secondary_color: "#ec4899",
+      background_color: "#111827",
+      text_color: "#ffffff",
+      card_color: "#1f2937"
+    };
+    
+    // Admin emails
     const ADMIN_EMAILS = ['soportedekyb@gmail.com', 'elihuf07@gmail.com'];
     
-    let appState = {
-      currentScreen: 'splash',
-      currentUser: null,
-      userProfile: null,
-      isGuest: false,
-      selectedSeries: null,
-      userData: [],
-      hasUnreadPoll: false,
-      isLoading: false,
-      recordCount: 0
-    };
-    
-    const avatarLibrary = [
-      { id: 'bad-buddy', series: 'Bad Buddy', url: 'https://via.placeholder.com/150/ec4899/ffffff?text=BB' },
-      { id: 'semantic-error', series: 'Semantic Error', url: 'https://via.placeholder.com/150/8b5cf6/ffffff?text=SE' },
-      { id: 'gap', series: 'GAP', url: 'https://via.placeholder.com/150/10b981/ffffff?text=GAP' },
-      { id: 'cherry-magic', series: 'Cherry Magic', url: 'https://via.placeholder.com/150/f59e0b/ffffff?text=CM' },
-      { id: 'we-best-love', series: 'We Best Love', url: 'https://via.placeholder.com/150/ef4444/ffffff?text=WBL' },
-      { id: 'handmaiden', series: 'Handmaiden', url: 'https://via.placeholder.com/150/ec4899/ffffff?text=HM' },
-      { id: 'gameboys', series: 'Gameboys', url: 'https://via.placeholder.com/150/3b82f6/ffffff?text=GB' },
-      { id: 'tsukutabe', series: 'Tsukutabe', url: 'https://via.placeholder.com/150/06b6d4/ffffff?text=TT' },
-      { id: 'love-stage', series: 'Love Stage', url: 'https://via.placeholder.com/150/a855f7/ffffff?text=LS' },
-      { id: 'bl-drama', series: 'BL Drama', url: 'https://via.placeholder.com/150/f472b6/ffffff?text=BD' },
-      { id: 'gl-series', series: 'GL Series', url: 'https://via.placeholder.com/150/c084fc/ffffff?text=GL' },
-      { id: 'my-school', series: 'My School', url: 'https://via.placeholder.com/150/14b8a6/ffffff?text=MS' }
+    // Series data
+    const SERIES_DATA = [
+      { id: 's1', title: 'Bad Buddy', genre: 'BL', country: 'Thailand', rating: 9.2, votes: 1547, year: 2021, episodes: 12, duration: '45min', image: 'https://dramarambles.com/wp-content/uploads/2022/05/bad-buddy-review-cover.jpg', synopsis: 'Pat y Pran, hijos de familias rivales, desarrollan una amistad secreta que se convierte en amor mientras navegan las expectativas familiares.' },
+      { id: 's2', title: 'Semantic Error', genre: 'BL', country: 'Korea', rating: 9.0, votes: 1823, year: 2022, episodes: 8, duration: '25min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Semantic+Error', synopsis: 'Un estudiante de informática obsesionado con la lógica conoce a un diseñador artístico, desafiando su visión racional del mundo.' },
+      { id: 's3', title: 'GAP The Series', genre: 'GL', country: 'Thailand', rating: 8.8, votes: 1234, year: 2022, episodes: 12, duration: '50min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=GAP+Series', synopsis: 'Sam, CEO de una empresa, se enamora de Mon, su nueva asistente, desafiando las normas sociales y corporativas.' },
+      { id: 's4', title: 'Cherry Magic', genre: 'BL', country: 'Japan', rating: 8.9, votes: 2156, year: 2020, episodes: 12, duration: '24min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Cherry+Magic', synopsis: 'Adachi, un oficinista virgen de 30 años, descubre que puede leer mentes y se entera de que su compañero popular está enamorado de él.' },
+      { id: 's5', title: 'We Best Love', genre: 'BL', country: 'Taiwan', rating: 8.7, votes: 1678, year: 2021, episodes: 12, duration: '30min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=We+Best+Love', synopsis: 'Dos rivales de secundaria se reencuentran años después, descubriendo que su competencia escondía sentimientos más profundos.' },
+      { id: 's6', title: 'The Handmaiden', genre: 'GL', country: 'Korea', rating: 9.5, votes: 3421, year: 2016, episodes: 1, duration: '145min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=The+Handmaiden', synopsis: 'Una ladrona es contratada como sirvienta de una heredera japonesa, pero un plan de estafa se convierte en romance inesperado.' },
+      { id: 's7', title: 'Gameboys', genre: 'BL', country: 'Philippines', rating: 8.6, votes: 1543, year: 2020, episodes: 13, duration: '15min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Gameboys', synopsis: 'Durante la cuarentena, Cairo y Gavreel desarrollan una conexión virtual que se convierte en algo más significativo.' },
+      { id: 's8', title: 'Tsukutabe', genre: 'GL', country: 'Japan', rating: 8.4, votes: 876, year: 2020, episodes: 12, duration: '24min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=Tsukutabe', synopsis: 'Nomoto disfruta cocinar para Kasuga, su vecina, y juntas descubren una conexión más profunda a través de la comida.' },
+      { id: 's9', title: 'KinnPorsche', genre: 'BL', country: 'Thailand', rating: 8.9, votes: 2987, year: 2022, episodes: 14, duration: '60min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=KinnPorsche', synopsis: 'Un estudiante se convierte en guardaespaldas de un heredero mafioso, desarrollando una relación complicada en medio del peligro.' },
+      { id: 's10', title: 'Love Class', genre: 'BL', country: 'Korea', rating: 7.8, votes: 1234, year: 2022, episodes: 6, duration: '25min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Love+Class', synopsis: 'Estudiantes universitarios exploran el amor y las relaciones en una clase sobre ese tema.' },
+      { id: 's11', title: 'Old Fashion Cupcake', genre: 'BL', country: 'Japan', rating: 9.1, votes: 1876, year: 2022, episodes: 5, duration: '24min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Old+Fashion', synopsis: 'Un jefe de mediana edad y su subordinado más joven descubren nuevas perspectivas sobre la vida y el amor.' },
+      { id: 's12', title: 'Show Me Love', genre: 'GL', country: 'Thailand', rating: 8.2, votes: 765, year: 2023, episodes: 9, duration: '45min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=Show+Me+Love', synopsis: 'Dos mujeres de diferentes mundos se encuentran y desafían las expectativas sobre el amor y la identidad.' },
+      { id: 's13', title: 'History 3 MODC', genre: 'BL', country: 'Taiwan', rating: 8.8, votes: 1432, year: 2019, episodes: 20, duration: '30min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=History+3', synopsis: 'Un policía encubierto se infiltra en una banda y desarrolla sentimientos complicados por el líder.' },
+      { id: 's14', title: 'Lily Fever', genre: 'GL', country: 'Korea', rating: 8.0, votes: 654, year: 2015, episodes: 9, duration: '12min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=Lily+Fever', synopsis: 'Una relación entre dos mujeres se desarrolla con humor y ternura en esta serie web coreana.' },
+      { id: 's15', title: 'My School President', genre: 'BL', country: 'Thailand', rating: 9.3, votes: 2543, year: 2023, episodes: 12, duration: '45min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=My+School+President', synopsis: 'El líder de una banda escolar se enamora del presidente estudiantil en esta dulce historia de primer amor.' },
+      { id: 's16', title: 'My Beautiful Man', genre: 'BL', country: 'Japan', rating: 8.5, votes: 1765, year: 2021, episodes: 6, duration: '24min', image: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=My+Beautiful+Man', synopsis: 'Un estudiante tímido desarrolla una obsesión por el chico popular de su clase, llevando a una relación única.' },
+      { id: 's17', title: 'Whisper Me a Love Song', genre: 'GL', country: 'Japan', rating: 8.6, votes: 987, year: 2024, episodes: 12, duration: '24min', image: 'https://via.placeholder.com/300x450/a855f7/ffffff?text=Whisper+Love', synopsis: 'Una estudiante de primer año se enamora de una guitarrista de último año después de escuchar su música.' }
     ];
     
-    const seriesDatabase = [
-      { id: 'bl-thailand-1', title: 'Bad Buddy', country: 'Thailand', genre: 'BL', year: 2021, episodes: 12, duration: '45 min', synopsis: 'Pat y Pran han sido rivales desde la infancia debido a sus familias. Pero cuando se hacen vecinos en la universidad, descubren que hay algo más que rivalidad entre ellos.', poster: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Bad+Buddy', rating: 0, ratingCount: 0, category: 'popular' },
-      { id: 'bl-korea-1', title: 'Semantic Error', country: 'Korea', genre: 'BL', year: 2022, episodes: 8, duration: '25 min', synopsis: 'Chu Sangwoo es un estudiante de informática perfeccionista que se ve obligado a trabajar con Jang Jaeyoung, un artista carismático y caótico.', poster: 'https://via.placeholder.com/300x450/8b5cf6/ffffff?text=Semantic+Error', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'gl-thailand-1', title: 'GAP The Series', country: 'Thailand', genre: 'GL', year: 2022, episodes: 12, duration: '50 min', synopsis: 'Mon, una joven trabajadora, se enamora de su jefa Sam, una heredera fría y distante. Una historia de amor prohibido en el mundo corporativo.', poster: 'https://via.placeholder.com/300x450/10b981/ffffff?text=GAP', rating: 0, ratingCount: 0, category: 'popular' },
-      { id: 'bl-japan-1', title: 'Cherry Magic', country: 'Japan', genre: 'BL', year: 2020, episodes: 12, duration: '30 min', synopsis: 'Adachi descubre que al cumplir 30 años siendo virgen, puede leer las mentes de las personas que toca. Descubre que su compañero Kurosawa está enamorado de él.', poster: 'https://via.placeholder.com/300x450/f59e0b/ffffff?text=Cherry+Magic', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'bl-taiwan-1', title: 'We Best Love', country: 'Taiwan', genre: 'BL', year: 2021, episodes: 12, duration: '35 min', synopsis: 'Zhou Shuyi y Gao Shide han sido rivales durante años, pero sus sentimientos van más allá de la competencia académica.', poster: 'https://via.placeholder.com/300x450/ef4444/ffffff?text=We+Best+Love', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'gl-korea-1', title: 'The Handmaiden', country: 'Korea', genre: 'GL', year: 2023, episodes: 10, duration: '40 min', synopsis: 'Una adaptación moderna de una historia de amor entre dos mujeres de diferentes clases sociales.', poster: 'https://via.placeholder.com/300x450/ec4899/ffffff?text=Handmaiden', rating: 0, ratingCount: 0, category: 'gl' },
-      { id: 'bl-philippines-1', title: 'Gameboys', country: 'Philippines', genre: 'BL', year: 2020, episodes: 13, duration: '20 min', synopsis: 'Durante la cuarentena, Cairo conoce a Gavreel en un videojuego. Lo que comienza como amistad virtual se convierte en algo más profundo.', poster: 'https://via.placeholder.com/300x450/3b82f6/ffffff?text=Gameboys', rating: 0, ratingCount: 0, category: 'popular' },
-      { id: 'gl-japan-1', title: 'Tsukutabe', country: 'Japan', genre: 'GL', year: 2023, episodes: 10, duration: '30 min', synopsis: 'Una historia sobre comida, amor y autodescubrimiento entre dos mujeres que comparten su pasión por la cocina.', poster: 'https://via.placeholder.com/300x450/06b6d4/ffffff?text=Tsukutabe', rating: 0, ratingCount: 0, category: 'gl' },
-      { id: 'bl-thailand-2', title: 'KinnPorsche', country: 'Thailand', genre: 'BL', year: 2022, episodes: 14, duration: '50 min', synopsis: 'Kinn, el segundo hijo de una familia mafiosa, se enamora de Porsche, quien se convierte en su guardaespaldas.', poster: 'https://via.placeholder.com/300x450/dc2626/ffffff?text=KinnPorsche', rating: 0, ratingCount: 0, category: 'popular' },
-      { id: 'bl-korea-2', title: 'Love Class', country: 'Korea', genre: 'BL', year: 2022, episodes: 6, duration: '25 min', synopsis: 'Estudiantes universitarios exploran el amor mientras toman una clase sobre relaciones.', poster: 'https://via.placeholder.com/300x450/7c3aed/ffffff?text=Love+Class', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'bl-japan-2', title: 'Old Fashion Cupcake', country: 'Japan', genre: 'BL', year: 2022, episodes: 5, duration: '25 min', synopsis: 'Un jefe y su subordinado descubren nuevos sentimientos mientras visitan cafés de postres.', poster: 'https://via.placeholder.com/300x450/f97316/ffffff?text=Old+Fashion', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'gl-thailand-2', title: 'Show Me Love', country: 'Thailand', genre: 'GL', year: 2023, episodes: 9, duration: '45 min', synopsis: 'Una influencer y una estudiante de medicina se enamoran en medio de las redes sociales.', poster: 'https://via.placeholder.com/300x450/06b6d4/ffffff?text=Show+Me+Love', rating: 0, ratingCount: 0, category: 'gl' },
-      { id: 'bl-taiwan-2', title: 'History 3: MODC', country: 'Taiwan', genre: 'BL', year: 2019, episodes: 20, duration: '30 min', synopsis: 'Un policía puede ver fantasmas y un joven que acaba de morir forman un vínculo inesperado.', poster: 'https://via.placeholder.com/300x450/0891b2/ffffff?text=MODC', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'gl-korea-2', title: 'Lily Fever', country: 'Korea', genre: 'GL', year: 2023, episodes: 8, duration: '15 min', synopsis: 'Dos estudiantes universitarias exploran sus sentimientos en esta dulce historia de primer amor.', poster: 'https://via.placeholder.com/300x450/db2777/ffffff?text=Lily+Fever', rating: 0, ratingCount: 0, category: 'gl' },
-      { id: 'bl-thailand-3', title: 'My School President', country: 'Thailand', genre: 'BL', year: 2023, episodes: 12, duration: '45 min', synopsis: 'Gun quiere que su banda gane la competencia escolar, pero Tinn, el presidente estudiantil, tiene otros planes.', poster: 'https://via.placeholder.com/300x450/14b8a6/ffffff?text=My+School', rating: 0, ratingCount: 0, category: 'popular' },
-      { id: 'bl-japan-3', title: 'My Beautiful Man', country: 'Japan', genre: 'BL', year: 2021, episodes: 6, duration: '25 min', synopsis: 'Hira, un estudiante tímido, idolatra a Kiyoi, el chico popular de la clase.', poster: 'https://via.placeholder.com/300x450/84cc16/ffffff?text=Beautiful+Man', rating: 0, ratingCount: 0, category: 'bl' },
-      { id: 'gl-japan-2', title: 'Whisper Me a Love Song', country: 'Japan', genre: 'GL', year: 2024, episodes: 12, duration: '25 min', synopsis: 'Una chica se enamora de una cantante después de escuchar su música.', poster: 'https://via.placeholder.com/300x450/f43f5e/ffffff?text=Whisper+Love', rating: 0, ratingCount: 0, category: 'gl' }
+    // Avatar library by series
+    const AVATAR_LIBRARY = [
+      {
+        series: 'Bad Buddy',
+        characters: [
+          { id: 'bb1', name: 'Pat', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0kT66qv0pwVajb3LvgPpqcxJxYIbRPLgbug&s' },
+          { id: 'bb2', name: 'Pran', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRODt6kOhWI6Jl3yTvZIZP-4hU2kihGVlF6gA&s' },
+          { id: 'bb3', name: 'Ink', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=I' },
+          { id: 'bb4', name: 'Pa', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=PA' }
+        ]
+      },
+      {
+        series: 'Semantic Error',
+        characters: [
+          { id: 'se1', name: 'Sangwoo', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=SW' },
+          { id: 'se2', name: 'Jaeyoung', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=JY' },
+          { id: 'se3', name: 'Jiyeon', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=J' }
+        ]
+      },
+      {
+        series: 'GAP The Series',
+        characters: [
+          { id: 'gap1', name: 'Sam', url: 'https://via.placeholder.com/80/a855f7/ffffff?text=S' },
+          { id: 'gap2', name: 'Mon', url: 'https://via.placeholder.com/80/a855f7/ffffff?text=M' },
+          { id: 'gap3', name: 'Tee', url: 'https://via.placeholder.com/80/a855f7/ffffff?text=T' },
+          { id: 'gap4', name: 'Jim', url: 'https://via.placeholder.com/80/a855f7/ffffff?text=JM' }
+        ]
+      },
+      {
+        series: 'Cherry Magic',
+        characters: [
+          { id: 'cm1', name: 'Adachi', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=A' },
+          { id: 'cm2', name: 'Kurosawa', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=K' },
+          { id: 'cm3', name: 'Tsuge', url: 'https://via.placeholder.com/80/ec4899/ffffff?text=TS' }
+        ]
+      }
     ];
     
+    // Toast notifications
     function showToast(message, type = 'info') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      const colors = {
-        success: '#10b981',
-        error: '#ef4444',
-        info: '#3b82f6'
-      };
+      const toastContainer = document.getElementById('toast-container') || createToastContainer();
       
-      toast.className = 'toast px-6 py-3 rounded-lg shadow-lg';
-      toast.style.backgroundColor = colors[type] || colors.info;
-      toast.style.color = 'white';
+      const toast = document.createElement('div');
+      toast.className = `slide-down px-6 py-4 rounded-lg shadow-lg text-white font-semibold mb-3 ${
+        type === 'success' ? 'bg-green-500' :
+        type === 'error' ? 'bg-red-500' :
+        'bg-blue-500'
+      }`;
       toast.textContent = message;
       
-      container.appendChild(toast);
+      toastContainer.appendChild(toast);
       
       setTimeout(() => {
         toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100px)';
         setTimeout(() => toast.remove(), 300);
       }, 3000);
     }
     
+    function createToastContainer() {
+      const container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'fixed top-4 right-4 z-50 flex flex-col items-end';
+      container.style.width = '320px';
+      document.body.appendChild(container);
+      return container;
+    }
+    
+    // Data handler for Canva SDK
     const dataHandler = {
       onDataChanged(data) {
-        appState.userData = data;
-        appState.recordCount = data.length;
+        state.allRecords = data;
         
-        if (appState.currentUser && !appState.isGuest) {
-          const profile = data.find(d => d.type === 'user_profile' && d.user_id === appState.currentUser.id);
-          if (profile) {
-            appState.userProfile = profile;
-          }
-        }
-        
-        const polls = data.filter(d => d.type === 'poll');
-        const userVotes = data.filter(d => d.type === 'poll_vote' && d.user_id === appState.currentUser?.id);
-        const votedPollIds = userVotes.map(v => v.poll_id);
-        appState.hasUnreadPoll = polls.some(p => !votedPollIds.includes(p.poll_id));
-        
-        const ratings = data.filter(d => d.type === 'rating');
-        seriesDatabase.forEach(series => {
-          const seriesRatings = ratings.filter(r => r.series_id === series.id);
-          if (seriesRatings.length > 0) {
-            const sum = seriesRatings.reduce((acc, r) => acc + r.rating, 0);
-            series.rating = sum / seriesRatings.length;
-            series.ratingCount = seriesRatings.length;
-          }
-        });
-        
-        if (['series', 'polls', 'home', 'profile'].includes(appState.currentScreen)) {
-          render();
+        if (state.currentView === 'home') {
+          renderHome();
+        } else if (state.currentView === 'series' && state.currentSeries) {
+          renderSeriesDetail(state.currentSeries);
+        } else if (state.currentView === 'polls') {
+          renderPolls();
+        } else if (state.currentView === 'profile') {
+          renderProfile();
         }
       }
     };
     
-    function getUserProfile(userId) {
-      return appState.userData.find(d => d.type === 'user_profile' && d.user_id === userId);
-    }
-    
-    function renderSplashScreen() {
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const bgColor = window.elementSdk?.config?.background_color || defaultConfig.background_color;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      const appName = window.elementSdk?.config?.app_name || defaultConfig.app_name;
-      const tagline = window.elementSdk?.config?.tagline || defaultConfig.tagline;
-      
-      return `
-        <div class="h-full w-full flex flex-col items-center justify-center fade-in" style="background-color: ${bgColor};">
-          <div class="text-center">
-            <h1 class="gradient-text mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 3}px; font-weight: 700;">${appName}</h1>
-            <p class="mb-8" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.25}px; color: ${accentColor}; opacity: 0.9;">${tagline}</p>
-            <div class="loader pulse-glow mx-auto" style="border-top-color: ${accentColor};"></div>
-          </div>
-        </div>
-      `;
-    }
-    
-    function renderLoginScreen() {
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const bgColor = window.elementSdk?.config?.background_color || defaultConfig.background_color;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      const secondaryAccent = window.elementSdk?.config?.secondary_accent || defaultConfig.secondary_accent;
-      const appName = window.elementSdk?.config?.app_name || defaultConfig.app_name;
-      const loginButton = window.elementSdk?.config?.login_button || defaultConfig.login_button;
-      const signupButton = window.elementSdk?.config?.signup_button || defaultConfig.signup_button;
-      const guestButton = window.elementSdk?.config?.guest_button || defaultConfig.guest_button;
-      
-      return `
-        <div class="h-full w-full flex flex-col items-center justify-center px-6 fade-in" style="background-color: ${bgColor};">
-          <div class="w-full max-w-md">
-            <h1 class="gradient-text text-center mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 2.5}px; font-weight: 700;">${appName}</h1>
-            <p class="text-center mb-8" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: ${accentColor}; opacity: 0.8;">Bienvenido a tu comunidad BL/GL</p>
+    // Initialize app
+    async function initializeApp() {
+      try {
+        await window.dataSdk.init(dataHandler);
+        await window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (config) => {
+            const titleEl = document.getElementById('app-title');
+            if (titleEl) titleEl.textContent = config.app_title || defaultConfig.app_title;
             
-            <form id="loginForm" class="space-y-4 mb-6">
+            const welcomeEl = document.getElementById('welcome-message');
+            if (welcomeEl) welcomeEl.textContent = config.welcome_message || defaultConfig.welcome_message;
+            
+            const popularEl = document.getElementById('popular-title');
+            if (popularEl) popularEl.textContent = config.popular_title || defaultConfig.popular_title;
+            
+            const blEl = document.getElementById('bl-section-title');
+            if (blEl) blEl.textContent = config.bl_section_title || defaultConfig.bl_section_title;
+            
+            const glEl = document.getElementById('gl-section-title');
+            if (glEl) glEl.textContent = config.gl_section_title || defaultConfig.gl_section_title;
+            
+            const loginTitleEl = document.getElementById('login-title');
+            if (loginTitleEl) loginTitleEl.textContent = config.login_title || defaultConfig.login_title;
+            
+            const registerTitleEl = document.getElementById('register-title');
+            if (registerTitleEl) registerTitleEl.textContent = config.register_title || defaultConfig.register_title;
+            
+            const guestBtnEl = document.getElementById('guest-button');
+            if (guestBtnEl) guestBtnEl.textContent = config.guest_button || defaultConfig.guest_button;
+          },
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () => config.primary_color || defaultConfig.primary_color,
+                set: (value) => {
+                  config.primary_color = value;
+                  window.elementSdk.setConfig({ primary_color: value });
+                }
+              },
+              {
+                get: () => config.background_color || defaultConfig.background_color,
+                set: (value) => {
+                  config.background_color = value;
+                  window.elementSdk.setConfig({ background_color: value });
+                }
+              },
+              {
+                get: () => config.card_color || defaultConfig.card_color,
+                set: (value) => {
+                  config.card_color = value;
+                  window.elementSdk.setConfig({ card_color: value });
+                }
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  config.text_color = value;
+                  window.elementSdk.setConfig({ text_color: value });
+                }
+              },
+              {
+                get: () => config.secondary_color || defaultConfig.secondary_color,
+                set: (value) => {
+                  config.secondary_color = value;
+                  window.elementSdk.setConfig({ secondary_color: value });
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ['app_title', config.app_title || defaultConfig.app_title],
+            ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
+            ['popular_title', config.popular_title || defaultConfig.popular_title],
+            ['bl_section_title', config.bl_section_title || defaultConfig.bl_section_title],
+            ['gl_section_title', config.gl_section_title || defaultConfig.gl_section_title],
+            ['login_title', config.login_title || defaultConfig.login_title],
+            ['register_title', config.register_title || defaultConfig.register_title],
+            ['guest_button', config.guest_button || defaultConfig.guest_button]
+          ])
+        });
+      } catch (error) {
+        console.error('SDK initialization error:', error);
+      }
+      
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          state.user = user;
+          state.isGuest = false;
+          navigateTo('home');
+        } else if (state.isGuest) {
+          navigateTo('home');
+        } else {
+          navigateTo('login');
+        }
+      });
+    }
+    
+    // Navigation
+    function navigateTo(view, data = null) {
+      state.currentView = view;
+      state.currentSeries = data;
+      
+      switch(view) {
+        case 'login':
+          renderLogin();
+          break;
+        case 'register':
+          renderRegister();
+          break;
+        case 'home':
+          renderHome();
+          break;
+        case 'series':
+          renderSeriesDetail(data);
+          break;
+        case 'polls':
+          renderPolls();
+          break;
+        case 'profile':
+          renderProfile();
+          break;
+      }
+    }
+    
+    // Render login
+    function renderLogin() {
+      const config = window.elementSdk?.config || defaultConfig;
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="h-full w-full flex items-center justify-center p-6 fade-in">
+          <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-2xl p-8 slide-up">
+            <div class="text-center mb-8">
+              <h1 class="text-5xl font-bold mb-2 bg-gradient-to-r from-green-500 to-pink-500 bg-clip-text text-transparent">${config.app_title || defaultConfig.app_title}</h1>
+              <p class="text-gray-400 text-base">${config.welcome_message || defaultConfig.welcome_message}</p>
+            </div>
+            
+            <h2 id="login-title" class="text-2xl font-semibold mb-6">${config.login_title || defaultConfig.login_title}</h2>
+            
+            <form id="login-form" class="space-y-4">
               <div>
-                <label for="email" class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Correo Electrónico</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  required
-                  class="w-full px-4 py-3 rounded-lg input-glow transition-all" 
-                  style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-                  placeholder="tu@email.com"
-                />
+                <label for="email" class="block text-sm font-semibold mb-2">Email</label>
+                <input type="email" id="email" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition">
               </div>
+              
               <div>
-                <label for="password" class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Contraseña</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  required
-                  class="w-full px-4 py-3 rounded-lg input-glow transition-all" 
-                  style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-                  placeholder="••••••••"
-                />
+                <label for="password" class="block text-sm font-semibold mb-2">Contraseña</label>
+                <input type="password" id="password" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition">
               </div>
-              <button 
-                type="submit"
-                id="loginSubmitBtn"
-                class="w-full py-3 rounded-lg ripple font-semibold transition-all hover:opacity-90"
-                style="background: linear-gradient(135deg, ${accentColor}, ${secondaryAccent}); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px; color: white;"
-              >
-                ${loginButton}
+              
+              <button type="submit" class="w-full btn-gradient-bl-gl text-white font-bold py-3 rounded-lg ripple-effect transition">
+                Iniciar Sesión
               </button>
             </form>
             
-            <button 
-              id="signupBtn"
-              class="w-full py-3 rounded-lg ripple font-semibold mb-4 transition-all hover:opacity-90"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid ${accentColor}; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px; color: ${accentColor};"
-            >
-              ${signupButton}
+            <div class="mt-6 space-y-3">
+              <button id="register-btn" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 rounded-lg ripple-effect transition">
+                Crear Cuenta Nueva
+              </button>
+              
+              <button id="guest-btn" class="w-full bg-transparent border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white font-semibold py-3 rounded-lg ripple-effect transition">
+                <span id="guest-button">${config.guest_button || defaultConfig.guest_button}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+        
+        btn.disabled = true;
+        btn.textContent = 'Iniciando...';
+        
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          showToast('¡Bienvenido de vuelta!', 'success');
+        } catch (error) {
+          showToast(error.message, 'error');
+          btn.disabled = false;
+          btn.textContent = 'Iniciar Sesión';
+        }
+      });
+      
+      document.getElementById('register-btn').addEventListener('click', () => {
+        navigateTo('register');
+      });
+      
+      document.getElementById('guest-btn').addEventListener('click', () => {
+        state.isGuest = true;
+        state.user = { uid: 'guest', email: 'guest@kyb.seen', displayName: 'Invitado' };
+        navigateTo('home');
+        showToast('Modo invitado activado', 'info');
+      });
+    }
+    
+    // Render register
+    function renderRegister() {
+      const config = window.elementSdk?.config || defaultConfig;
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="h-full w-full flex items-center justify-center p-6 fade-in">
+          <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-2xl p-8 slide-up">
+            <button id="back-btn" class="mb-4 text-green-500 hover:text-green-400 flex items-center transition">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+              Volver
             </button>
             
-            <button 
-              id="guestBtn"
-              class="w-full py-3 rounded-lg transition-all hover:opacity-70"
-              style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: rgba(255, 255, 255, 0.6);"
-            >
-              ${guestButton}
-            </button>
+            <h2 id="register-title" class="text-2xl font-semibold mb-6">${config.register_title || defaultConfig.register_title}</h2>
+            
+            <form id="register-form" class="space-y-4">
+              <div>
+                <label for="reg-email" class="block text-sm font-semibold mb-2">Email</label>
+                <input type="email" id="reg-email" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+              </div>
+              
+              <div>
+                <label for="reg-password" class="block text-sm font-semibold mb-2">Contraseña (mínimo 6 caracteres)</label>
+                <input type="password" id="reg-password" required minlength="6" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+              </div>
+              
+              <div>
+                <label for="reg-username" class="block text-sm font-semibold mb-2">Nombre de usuario</label>
+                <input type="text" id="reg-username" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition">
+              </div>
+              
+              <button type="submit" class="w-full btn-gradient-bl-gl text-white font-bold py-3 rounded-lg ripple-effect transition">
+                Registrarse
+              </button>
+            </form>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('back-btn').addEventListener('click', () => {
+        navigateTo('login');
+      });
+      
+      document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+        const username = document.getElementById('reg-username').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+        
+        if (password.length < 6) {
+          showToast('La contraseña debe tener al menos 6 caracteres', 'error');
+          return;
+        }
+        
+        btn.disabled = true;
+        btn.textContent = 'Registrando...';
+        
+        try {
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          await userCredential.user.updateProfile({ displayName: username });
+          
+          const createResult = await window.dataSdk.create({
+            user_profile: userCredential.user.uid,
+            username: username,
+            subname: '',
+            avatar_series_id: '',
+            avatar_character_id: '',
+            avatar_url: '',
+            email: email
+          });
+          
+          if (createResult.isOk) {
+            showToast('¡Cuenta creada con éxito!', 'success');
+          } else {
+            showToast('Error al crear perfil', 'error');
+          }
+        } catch (error) {
+          showToast(error.message, 'error');
+          btn.disabled = false;
+          btn.textContent = 'Registrarse';
+        }
+      });
+    }
+    
+    // Render home
+    function renderHome() {
+      const config = window.elementSdk?.config || defaultConfig;
+      const app = document.getElementById('app');
+      
+      const blSeries = SERIES_DATA.filter(s => s.genre === 'BL');
+      const glSeries = SERIES_DATA.filter(s => s.genre === 'GL');
+      const popular = [...SERIES_DATA].sort((a, b) => b.rating - a.rating).slice(0, 6);
+      
+      const countrySections = {
+        'Thailand': SERIES_DATA.filter(s => s.country === 'Thailand'),
+        'Korea': SERIES_DATA.filter(s => s.country === 'Korea'),
+        'Japan': SERIES_DATA.filter(s => s.country === 'Japan'),
+        'Taiwan': SERIES_DATA.filter(s => s.country === 'Taiwan'),
+        'Philippines': SERIES_DATA.filter(s => s.country === 'Philippines')
+      };
+      
+      const userProfile = state.allRecords.find(r => r.user_profile === state.user?.uid);
+      const avatarUrl = userProfile?.avatar_url || '';
+      
+      const pollsCount = state.allRecords.filter(r => r.poll_id).length;
+      const seriesMonthCount = state.allRecords.filter(r => r.series_month_series_id).length;
+      const hasPollsIndicator = pollsCount > 0 || seriesMonthCount > 0;
+      
+      app.innerHTML = `
+        <div class="h-full w-full overflow-auto">
+          <!-- Header -->
+          <header class="sticky top-0 z-40 glassmorphism border-b border-gray-700">
+            <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+              <h1 id="app-title" class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-pink-500 bg-clip-text text-transparent">${config.app_title || defaultConfig.app_title}</h1>
+              
+              <div class="flex items-center gap-4">
+                <button id="polls-btn" class="relative bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg font-semibold transition ripple-effect">
+                  📊 Polls
+                  ${hasPollsIndicator ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full pulse-glow"></span>' : ''}
+                </button>
+                
+                <button id="profile-btn" class="w-10 h-10 rounded-full overflow-hidden border-2 border-green-500 hover:scale-110 transition ${avatarUrl ? '' : 'avatar-gradient'}">
+                  ${avatarUrl ? `<img src="${avatarUrl}" alt="Avatar" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-white font-bold">U</div>'}
+                </button>
+              </div>
+            </div>
+          </header>
+          
+          <!-- Main content -->
+          <main class="max-w-screen-xl mx-auto px-6 py-8 pb-24 md:pb-8">
+            <p id="welcome-message" class="text-lg text-gray-300 mb-8">${config.welcome_message || defaultConfig.welcome_message}</p>
+            
+            <!-- Popular -->
+            <section class="mb-12">
+              <div class="flex items-center justify-between mb-6">
+                <h2 id="popular-title" class="text-2xl md:text-3xl font-bold">${config.popular_title || defaultConfig.popular_title}</h2>
+                <button class="see-more-btn text-green-500 hover:text-green-400 font-semibold transition flex items-center gap-2" data-section="popular">
+                  Ver más
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                ${popular.map(series => createSeriesCard(series)).join('')}
+              </div>
+            </section>
+            
+            <!-- BL Series -->
+            <section class="mb-12">
+              <div class="flex items-center justify-between mb-6">
+                <h2 id="bl-section-title" class="text-2xl md:text-3xl font-bold">${config.bl_section_title || defaultConfig.bl_section_title}</h2>
+                <button class="see-more-btn text-green-500 hover:text-green-400 font-semibold transition flex items-center gap-2" data-section="bl">
+                  Ver más
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                ${blSeries.map(series => createSeriesCard(series)).join('')}
+              </div>
+            </section>
+            
+            <!-- GL Series -->
+            <section class="mb-12">
+              <div class="flex items-center justify-between mb-6">
+                <h2 id="gl-section-title" class="text-2xl md:text-3xl font-bold">${config.gl_section_title || defaultConfig.gl_section_title}</h2>
+                <button class="see-more-btn text-green-500 hover:text-green-400 font-semibold transition flex items-center gap-2" data-section="gl">
+                  Ver más
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                ${glSeries.map(series => createSeriesCard(series)).join('')}
+              </div>
+            </section>
+            
+            <!-- By country -->
+            ${Object.entries(countrySections).map(([country, series]) => `
+              <section class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 class="text-2xl md:text-3xl font-bold">${country}</h2>
+                  <button class="see-more-btn text-green-500 hover:text-green-400 font-semibold transition flex items-center gap-2" data-section="${country.toLowerCase()}">
+                    Ver más
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                  ${series.map(s => createSeriesCard(s)).join('')}
+                </div>
+              </section>
+            `).join('')}
+          </main>
+          
+          <!-- Mobile nav -->
+          <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 z-40">
+            <div class="flex items-center justify-around py-3">
+              <button class="nav-btn flex flex-col items-center text-green-500 font-semibold">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                </svg>
+                <span class="text-xs">Inicio</span>
+              </button>
+              
+              <button id="mobile-polls-btn" class="nav-btn flex flex-col items-center text-gray-400 hover:text-green-500 font-semibold transition relative">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                </svg>
+                <span class="text-xs">Polls</span>
+                ${hasPollsIndicator ? '<span class="absolute top-0 right-2 w-2 h-2 bg-pink-500 rounded-full"></span>' : ''}
+              </button>
+              
+              <button id="mobile-profile-btn" class="nav-btn flex flex-col items-center text-gray-400 hover:text-green-500 font-semibold transition">
+                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-xs">Perfil</span>
+              </button>
+            </div>
+          </nav>
+        </div>
+      `;
+      
+      document.getElementById('polls-btn').addEventListener('click', () => navigateTo('polls'));
+      document.getElementById('mobile-polls-btn').addEventListener('click', () => navigateTo('polls'));
+      document.getElementById('profile-btn').addEventListener('click', () => navigateTo('profile'));
+      document.getElementById('mobile-profile-btn').addEventListener('click', () => navigateTo('profile'));
+      
+      // Ver más buttons
+      document.querySelectorAll('.see-more-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const section = btn.dataset.section;
+          showToast(`Próximamente: Ver más de ${section}`, 'info');
+        });
+      });
+      
+      document.querySelectorAll('.series-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const seriesId = card.dataset.seriesId;
+          const series = SERIES_DATA.find(s => s.id === seriesId);
+          if (series) navigateTo('series', series);
+        });
+      });
+    }
+    
+    function createSeriesCard(series) {
+      const userRating = state.allRecords.find(r => r.rating_series_id === series.id && r.user_profile === state.user?.uid);
+      const userRatingValue = userRating ? userRating.rating_value : 0;
+      
+      return `
+        <div class="series-card card-hover bg-gray-800 rounded-xl overflow-hidden cursor-pointer" data-series-id="${series.id}">
+          <div class="aspect-[2/3] bg-gray-700">
+            <img src="${series.image}" alt="${series.title}" class="w-full h-full object-cover">
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-base mb-2 line-clamp-2">${series.title}</h3>
+            <div class="flex items-center justify-between mb-2">
+              <span class="${series.genre === 'BL' ? 'genre-badge-bl' : 'genre-badge-gl'}">${series.genre}</span>
+              <span class="text-sm text-gray-400">${series.country}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1">
+                ${renderStars(userRatingValue || series.rating)}
+              </div>
+              <span class="text-sm text-gray-400">${series.rating}</span>
+            </div>
           </div>
         </div>
       `;
     }
     
-    function renderHomeScreen() {
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const bgColor = window.elementSdk?.config?.background_color || defaultConfig.background_color;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      const popularTitle = window.elementSdk?.config?.popular_title || defaultConfig.popular_title;
-      const blTitle = window.elementSdk?.config?.bl_title || defaultConfig.bl_title;
-      const glTitle = window.elementSdk?.config?.gl_title || defaultConfig.gl_title;
-      const appName = window.elementSdk?.config?.app_name || defaultConfig.app_name;
+    function renderStars(rating, size = 'w-4 h-4') {
+      const fullStars = Math.floor(rating / 2);
+      const hasHalfStar = rating % 2 >= 1;
+      let stars = '';
       
-      const popularSeries = seriesDatabase.filter(s => s.category === 'popular');
-      const blSeries = seriesDatabase.filter(s => s.genre === 'BL');
-      const glSeries = seriesDatabase.filter(s => s.genre === 'GL');
-      const countries = ['Thailand', 'Korea', 'Japan', 'Taiwan', 'Philippines'];
-      
-      let userAvatar = '👤';
-      if (appState.userProfile?.profile_picture) {
-        if (appState.userProfile.profile_picture.startsWith('avatar-')) {
-          const avatarId = appState.userProfile.profile_picture.replace('avatar-', '');
-          const avatar = avatarLibrary.find(a => a.id === avatarId);
-          if (avatar) userAvatar = `<img src="${avatar.url}" alt="${avatar.series}" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.parentElement.innerHTML='👤';">`;
-        }
+      for (let i = 0; i < fullStars; i++) {
+        stars += `<svg class="${size} text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>`;
       }
       
-      return `
-        <div class="h-full w-full overflow-auto smooth-scroll" style="background-color: ${bgColor};">
-          <header class="sticky top-0 z-50 px-6 py-4 flex justify-between items-center" style="background: linear-gradient(180deg, ${bgColor} 0%, rgba(17, 24, 39, 0.95) 100%); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
-            <h1 class="gradient-text" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.75}px; font-weight: 700;">${appName}</h1>
-            <div class="flex items-center gap-4">
-              ${!appState.isGuest ? `
-                <button id="pollsBtn" class="relative transition-all hover:opacity-80">
-                  <svg class="w-8 h-8" fill="${accentColor}" viewBox="0 0 24 24">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-                  </svg>
-                  ${appState.hasUnreadPoll ? '<div class="notification-dot"></div>' : ''}
-                </button>
-              ` : ''}
-              <button id="profileBtn" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-size: ${baseFontSize * 1.5}px;">
-                ${userAvatar}
+      if (hasHalfStar) {
+        stars += `<svg class="${size} text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" opacity="0.5"></path></svg>`;
+      }
+      
+      const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+      for (let i = 0; i < emptyStars; i++) {
+        stars += `<svg class="${size} text-gray-600" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>`;
+      }
+      
+      return stars;
+    }
+    
+    // Render series detail
+    function renderSeriesDetail(series) {
+      const app = document.getElementById('app');
+      const gradient = series.genre === 'BL' ? 'from-pink-500/20' : 'from-purple-500/20';
+      
+      const userRating = state.allRecords.find(r => r.rating_series_id === series.id && r.user_profile === state.user?.uid);
+      const allRatings = state.allRecords.filter(r => r.rating_series_id === series.id && r.rating_value);
+      const avgRating = allRatings.length > 0 ? (allRatings.reduce((sum, r) => sum + r.rating_value, 0) / allRatings.length).toFixed(1) : series.rating;
+      const totalVotes = allRatings.length || series.votes;
+      
+      const inMyList = state.allRecords.some(r => r.my_list_series_id === series.id && r.user_profile === state.user?.uid);
+      
+      const messages = state.allRecords
+        .filter(r => r.message_series_id === series.id)
+        .sort((a, b) => a.message_timestamp - b.message_timestamp)
+        .map(msg => {
+          const profile = state.allRecords.find(p => p.user_profile === msg.user_profile);
+          return {
+            ...msg,
+            username: profile?.username || 'Usuario',
+            subname: profile?.subname || '',
+            avatar: profile?.avatar_url || ''
+          };
+        });
+      
+      const episodeRecords = state.allRecords.filter(r => r.episode_series_id === series.id && r.user_profile === state.user?.uid);
+      const watchedCount = episodeRecords.filter(r => r.watched).length;
+      
+      app.innerHTML = `
+        <div class="h-full w-full overflow-auto">
+          <!-- Header -->
+          <div class="relative h-64 md:h-80 bg-gradient-to-b ${gradient} to-gray-900">
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+            <img src="${series.image}" alt="${series.title}" class="w-full h-full object-cover opacity-40">
+            
+            <button id="back-btn" class="absolute top-4 left-4 bg-gray-900/80 backdrop-blur-sm p-3 rounded-full hover:bg-gray-800 transition">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h1 class="text-4xl md:text-5xl font-bold mb-2">${series.title}</h1>
+              <div class="flex items-center gap-3 flex-wrap">
+                <span class="${series.genre === 'BL' ? 'genre-badge-bl' : 'genre-badge-gl'}">${series.genre}</span>
+                <span class="text-sm text-gray-300">${series.country} • ${series.year}</span>
+                <span class="text-sm text-gray-300">${series.episodes} eps • ${series.duration}</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="max-w-screen-xl mx-auto px-6 py-8 grid md:grid-cols-[1fr_300px] gap-8">
+            <!-- Main content -->
+            <div>
+              <!-- Synopsis -->
+              <section class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Sinopsis</h2>
+                <p class="text-gray-300 text-base leading-relaxed">${series.synopsis}</p>
+              </section>
+              
+              <!-- My List button -->
+              <button id="my-list-btn" class="mb-8 ${inMyList ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-700 hover:bg-gray-600'} text-white font-bold px-6 py-3 rounded-lg ripple-effect transition ${state.isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
+                ${inMyList ? '✓ En Mi Lista' : '+ Agregar a Mi Lista'}
               </button>
+              
+              <!-- Rating -->
+              <section class="mb-8 bg-gray-800 rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-4">Calificación</h2>
+                <div class="flex items-center gap-6 mb-4">
+                  <div class="text-center">
+                    <div class="text-4xl font-bold text-green-500">${avgRating}</div>
+                    <div class="text-sm text-gray-400">${totalVotes} votos</div>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-1 mb-2">
+                      ${renderStars(avgRating * 2, 'w-6 h-6')}
+                    </div>
+                    <div class="text-sm text-gray-400">Promedio: ${avgRating}/10</div>
+                  </div>
+                </div>
+                
+                ${state.isGuest ? '<p class="text-gray-400 text-sm">Inicia sesión para calificar</p>' : `
+                  <div>
+                    <p class="text-sm font-semibold mb-3">Tu calificación: ${userRating ? userRating.rating_value + '/10' : 'Sin calificar'}</p>
+                    <div class="flex gap-2" id="rating-buttons">
+                      ${[1,2,3,4,5,6,7,8,9,10].map(num => `
+                        <button class="rating-btn ${userRating?.rating_value === num ? 'bg-green-500' : 'bg-gray-700 hover:bg-gray-600'} text-white font-bold w-10 h-10 rounded-lg ripple-effect transition" data-rating="${num}">
+                          ${num}
+                        </button>
+                      `).join('')}
+                    </div>
+                  </div>
+                `}
+              </section>
+              
+              <!-- Chat -->
+              <section class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-4">Chat Comunitario</h2>
+                
+                ${state.isGuest ? '<p class="text-gray-400 text-sm mb-4">Inicia sesión para participar en el chat</p>' : ''}
+                
+                <div id="chat-messages" class="space-y-4 mb-4 max-h-96 overflow-y-auto">
+                  ${messages.length === 0 ? '<p class="text-gray-400 text-sm text-center py-8">No hay mensajes aún. ¡Sé el primero en comentar!</p>' : messages.map(msg => `
+                    <div class="flex gap-3 slide-up">
+                      <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ${msg.avatar ? '' : 'avatar-gradient'}">
+                        ${msg.avatar ? `<img src="${msg.avatar}" alt="${msg.username}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-white font-bold">${msg.username[0].toUpperCase()}</div>`}
+                      </div>
+                      <div class="flex-1">
+                        <div class="mb-1">
+                          <div class="font-bold text-sm">${msg.username}</div>
+                          ${msg.subname ? `<div class="text-xs text-gray-400">@${msg.subname}</div>` : ''}
+                        </div>
+                        <p class="text-gray-300 text-sm">${msg.message_text}</p>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+                
+                ${!state.isGuest ? `
+                  <form id="chat-form" class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition" required>
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2 rounded-lg ripple-effect transition">
+                      Enviar
+                    </button>
+                  </form>
+                ` : ''}
+              </section>
+            </div>
+            
+            <!-- Sidebar -->
+            <div>
+              <div class="bg-gray-800 rounded-xl p-6 sticky top-4">
+                <h3 class="text-xl font-bold mb-4">Episodios (${watchedCount}/${series.episodes})</h3>
+                <div class="space-y-2 max-h-96 overflow-y-auto">
+                  ${Array.from({length: series.episodes}, (_, i) => {
+                    const epNum = i + 1;
+                    const watched = episodeRecords.some(r => r.episode_number === epNum && r.watched);
+                    return `
+                      <button class="episode-btn w-full flex items-center justify-between bg-gray-700 hover:bg-gray-600 p-3 rounded-lg transition ${state.isGuest ? 'opacity-50 cursor-not-allowed' : ''}" data-episode="${epNum}">
+                        <span class="font-semibold">Episodio ${epNum}</span>
+                        <svg class="w-5 h-5 ${watched ? 'text-green-500' : 'text-gray-500'}" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                          <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('back-btn').addEventListener('click', () => navigateTo('home'));
+      
+      document.getElementById('my-list-btn')?.addEventListener('click', async () => {
+        if (state.isGuest) {
+          showToast('Inicia sesión para usar Mi Lista', 'info');
+          return;
+        }
+        
+        const btn = document.getElementById('my-list-btn');
+        btn.disabled = true;
+        
+        if (inMyList) {
+          const record = state.allRecords.find(r => r.my_list_series_id === series.id && r.user_profile === state.user.uid);
+          if (record) {
+            const result = await window.dataSdk.delete(record);
+            if (result.isOk) {
+              showToast('Eliminado de Mi Lista', 'success');
+            } else {
+              showToast('Error al eliminar', 'error');
+              btn.disabled = false;
+            }
+          }
+        } else {
+          if (state.allRecords.length >= 999) {
+            showToast('Límite de 999 registros alcanzado', 'error');
+            btn.disabled = false;
+            return;
+          }
+          
+          const result = await window.dataSdk.create({
+            my_list_series_id: series.id,
+            user_profile: state.user.uid
+          });
+          
+          if (result.isOk) {
+            showToast('Agregado a Mi Lista', 'success');
+          } else {
+            showToast('Error al agregar', 'error');
+            btn.disabled = false;
+          }
+        }
+      });
+      
+      document.querySelectorAll('.rating-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (state.isGuest) return;
+          
+          const rating = parseInt(btn.dataset.rating);
+          btn.disabled = true;
+          
+          const existingRating = state.allRecords.find(r => r.rating_series_id === series.id && r.user_profile === state.user.uid);
+          
+          if (existingRating) {
+            existingRating.rating_value = rating;
+            const result = await window.dataSdk.update(existingRating);
+            if (result.isOk) {
+              showToast(`Calificación actualizada: ${rating}/10`, 'success');
+            } else {
+              showToast('Error al actualizar', 'error');
+              btn.disabled = false;
+            }
+          } else {
+            if (state.allRecords.length >= 999) {
+              showToast('Límite de 999 registros alcanzado', 'error');
+              btn.disabled = false;
+              return;
+            }
+            
+            const result = await window.dataSdk.create({
+              rating_series_id: series.id,
+              rating_value: rating,
+              user_profile: state.user.uid
+            });
+            
+            if (result.isOk) {
+              showToast(`Calificado: ${rating}/10`, 'success');
+            } else {
+              showToast('Error al calificar', 'error');
+              btn.disabled = false;
+            }
+          }
+        });
+      });
+      
+      document.getElementById('chat-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        
+        if (!message || state.isGuest) return;
+        
+        if (state.allRecords.length >= 999) {
+          showToast('Límite de 999 registros alcanzado', 'error');
+          return;
+        }
+        
+        const btn = e.target.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+        
+        const result = await window.dataSdk.create({
+          message_series_id: series.id,
+          message_text: message,
+          message_timestamp: Date.now(),
+          user_profile: state.user.uid
+        });
+        
+        if (result.isOk) {
+          input.value = '';
+          showToast('Mensaje enviado', 'success');
+        } else {
+          showToast('Error al enviar mensaje', 'error');
+        }
+        
+        btn.disabled = false;
+        btn.textContent = 'Enviar';
+      });
+      
+      document.querySelectorAll('.episode-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (state.isGuest) {
+            showToast('Inicia sesión para marcar episodios', 'info');
+            return;
+          }
+          
+          const epNum = parseInt(btn.dataset.episode);
+          btn.disabled = true;
+          
+          const existingEpisode = state.allRecords.find(r => 
+            r.episode_series_id === series.id && 
+            r.episode_number === epNum && 
+            r.user_profile === state.user.uid
+          );
+          
+          if (existingEpisode) {
+            existingEpisode.watched = !existingEpisode.watched;
+            const result = await window.dataSdk.update(existingEpisode);
+            if (!result.isOk) {
+              showToast('Error al actualizar', 'error');
+              btn.disabled = false;
+            }
+          } else {
+            if (state.allRecords.length >= 999) {
+              showToast('Límite de 999 registros alcanzado', 'error');
+              btn.disabled = false;
+              return;
+            }
+            
+            const result = await window.dataSdk.create({
+              episode_series_id: series.id,
+              episode_number: epNum,
+              watched: true,
+              user_profile: state.user.uid
+            });
+            
+            if (!result.isOk) {
+              showToast('Error al marcar episodio', 'error');
+              btn.disabled = false;
+            }
+          }
+        });
+      });
+      
+      setTimeout(() => {
+        const chatDiv = document.getElementById('chat-messages');
+        if (chatDiv) chatDiv.scrollTop = chatDiv.scrollHeight;
+      }, 100);
+    }
+    
+    // Render polls
+    function renderPolls() {
+      const app = document.getElementById('app');
+      const isAdmin = ADMIN_EMAILS.includes(state.user?.email || '');
+      
+      const seriesOfMonth = state.allRecords.filter(r => r.series_month_series_id);
+      const polls = state.allRecords.filter(r => r.poll_id);
+      const userVotes = state.allRecords.filter(r => r.poll_vote_poll_id && r.user_profile === state.user?.uid);
+      
+      app.innerHTML = `
+        <div class="h-full w-full overflow-auto">
+          <!-- Header -->
+          <header class="sticky top-0 z-40 glassmorphism border-b border-gray-700">
+            <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <button id="back-btn" class="text-green-500 hover:text-green-400 transition">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </button>
+                <h1 class="text-2xl md:text-3xl font-bold">Polls & Votaciones</h1>
+              </div>
             </div>
           </header>
           
-          <main class="desktop-container px-6 py-6">
-            <section class="mb-8">
-              <h2 class="mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; font-weight: 600; color: ${accentColor};">${popularTitle}</h2>
-              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                ${popularSeries.map(series => `
-                  <div class="series-card rounded-lg overflow-hidden hover-zoom cursor-pointer" data-series-id="${series.id}">
-                    <div class="aspect-[2/3] bg-gray-700 flex items-center justify-center overflow-hidden">
-                      <img src="${series.poster}" alt="${series.title}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-family: ${customFont}, sans-serif; font-size: ${baseFontSize * 0.875}px; color: white; opacity: 0.8; padding: 1rem; text-align: center;&quot;>${series.title}</span>';">
-                    </div>
-                    <div class="p-3">
-                      <h3 class="font-semibold mb-1 truncate" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">${series.title}</h3>
-                      <p class="text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${series.genre} • ${series.country}</p>
-                      ${series.ratingCount > 0 ? `
-                        <div class="flex items-center mt-2">
-                          <span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">★ ${series.rating.toFixed(1)}</span>
-                        </div>
-                      ` : ''}
-                    </div>
-                  </div>
-                `).join('')}
+          <main class="max-w-screen-xl mx-auto px-6 py-8">
+            <!-- Series del Mes -->
+            <section class="mb-12">
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Serie del Mes</h2>
+                ${isAdmin && seriesOfMonth.length < 2 ? `
+                  <button id="add-series-month-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-lg ripple-effect transition">
+                    + Agregar Serie
+                  </button>
+                ` : ''}
               </div>
-            </section>
-            
-            <section class="mb-8">
-              <h2 class="mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; font-weight: 600; color: #ec4899;">${blTitle}</h2>
-              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                ${blSeries.slice(0, 5).map(series => `
-                  <div class="series-card rounded-lg overflow-hidden hover-zoom cursor-pointer" data-series-id="${series.id}">
-                    <div class="aspect-[2/3] bg-gray-700 flex items-center justify-center overflow-hidden">
-                      <img src="${series.poster}" alt="${series.title}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-family: ${customFont}, sans-serif; font-size: ${baseFontSize * 0.875}px; color: white; opacity: 0.8; padding: 1rem; text-align: center;&quot;>${series.title}</span>';">
-                    </div>
-                    <div class="p-3">
-                      <h3 class="font-semibold mb-1 truncate" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">${series.title}</h3>
-                      <p class="text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${series.country}</p>
-                      ${series.ratingCount > 0 ? `
-                        <div class="flex items-center mt-2">
-                          <span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">★ ${series.rating.toFixed(1)}</span>
-                        </div>
-                      ` : ''}
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </section>
-            
-            <section class="mb-8">
-              <h2 class="mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; font-weight: 600; color: #a855f7;">${glTitle}</h2>
-              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                ${glSeries.map(series => `
-                  <div class="series-card rounded-lg overflow-hidden hover-zoom cursor-pointer" data-series-id="${series.id}">
-                    <div class="aspect-[2/3] bg-gray-700 flex items-center justify-center overflow-hidden">
-                      <img src="${series.poster}" alt="${series.title}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-family: ${customFont}, sans-serif; font-size: ${baseFontSize * 0.875}px; color: white; opacity: 0.8; padding: 1rem; text-align: center;&quot;>${series.title}</span>';">
-                    </div>
-                    <div class="p-3">
-                      <h3 class="font-semibold mb-1 truncate" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">${series.title}</h3>
-                      <p class="text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${series.country}</p>
-                      ${series.ratingCount > 0 ? `
-                        <div class="flex items-center mt-2">
-                          <span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">★ ${series.rating.toFixed(1)}</span>
-                        </div>
-                      ` : ''}
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </section>
-            
-            ${countries.map(country => {
-              const countrySeries = seriesDatabase.filter(s => s.country === country).slice(0, 5);
-              if (countrySeries.length === 0) return '';
               
-              return `
-                <section class="mb-8">
-                  <h2 class="mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; font-weight: 600; color: ${accentColor};">${country}</h2>
-                  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    ${countrySeries.map(series => `
-                      <div class="series-card rounded-lg overflow-hidden hover-zoom cursor-pointer" data-series-id="${series.id}">
-                        <div class="aspect-[2/3] bg-gray-700 flex items-center justify-center overflow-hidden">
-                          <img src="${series.poster}" alt="${series.title}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=&quot;font-family: ${customFont}, sans-serif; font-size: ${baseFontSize * 0.875}px; color: white; opacity: 0.8; padding: 1rem; text-align: center;&quot;>${series.title}</span>';">
-                        </div>
-                        <div class="p-3">
-                          <h3 class="font-semibold mb-1 truncate" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">${series.title}</h3>
-                          <p class="text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${series.genre}</p>
-                          ${series.ratingCount > 0 ? `
-                            <div class="flex items-center mt-2">
-                              <span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">★ ${series.rating.toFixed(1)}</span>
-                            </div>
+              ${seriesOfMonth.length === 0 ? '<p class="text-gray-400">No hay series del mes seleccionadas</p>' : ''}
+              
+              <div class="grid md:grid-cols-2 gap-6">
+                ${seriesOfMonth.map(sm => {
+                  const series = SERIES_DATA.find(s => s.id === sm.series_month_series_id);
+                  if (!series) return '';
+                  return `
+                    <div class="bg-gray-800 rounded-xl overflow-hidden card-hover">
+                      <div class="aspect-video bg-gray-700">
+                        <img src="${series.image}" alt="${series.title}" class="w-full h-full object-cover">
+                      </div>
+                      <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${series.title}</h3>
+                        <p class="text-gray-400 text-sm mb-4">${series.synopsis.slice(0, 120)}...</p>
+                        <div class="flex items-center justify-between">
+                          <button class="view-series-btn bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-lg ripple-effect transition" data-series-id="${series.id}">
+                            Ver Serie
+                          </button>
+                          ${isAdmin ? `
+                            <button class="delete-series-month-btn text-red-500 hover:text-red-400 font-bold transition" data-record-id="${sm.__backendId}">
+                              Eliminar
+                            </button>
                           ` : ''}
                         </div>
                       </div>
-                    `).join('')}
-                  </div>
-                </section>
-              `;
-            }).join('')}
-          </main>
-        </div>
-      `;
-    }
-    
-    function renderSeriesScreen() {
-      if (!appState.selectedSeries) return;
-      
-      const series = appState.selectedSeries;
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const bgColor = window.elementSdk?.config?.background_color || defaultConfig.background_color;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      
-      const userEpisodes = appState.userData.filter(d => d.type === 'episode' && d.series_id === series.id && d.user_id === appState.currentUser?.id);
-      const userRating = appState.userData.find(d => d.type === 'rating' && d.series_id === series.id && d.user_id === appState.currentUser?.id);
-      const messages = appState.userData.filter(d => d.type === 'message' && d.series_id === series.id).sort((a, b) => a.timestamp - b.timestamp);
-      
-      const episodes = Array.from({ length: series.episodes }, (_, i) => i + 1);
-      
-      return `
-        <div class="h-full w-full overflow-auto smooth-scroll" style="background-color: ${bgColor};">
-          <div class="parallax-header relative" style="height: 40%; background: linear-gradient(180deg, rgba(17, 24, 39, 0.4), ${bgColor}), linear-gradient(135deg, ${series.genre === 'BL' ? '#ec4899' : '#a855f7'}, ${series.genre === 'BL' ? '#f472b6' : '#c084fc'});">
-            <button id="backBtn" class="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);">
-              <svg class="w-6 h-6" fill="white" viewBox="0 0 24 24">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-              </svg>
-            </button>
-            <div class="absolute bottom-4 left-6">
-              <h1 class="font-bold mb-1" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 2}px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">${series.title}</h1>
-              <p style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; opacity: 0.9;">${series.genre} • ${series.country} • ${series.year}</p>
-            </div>
-          </div>
-          
-          <main class="desktop-container px-6 py-6">
-            <div class="md:grid md:grid-cols-3 md:gap-8">
-              <div class="md:col-span-2">
-                <section class="mb-6">
-                  <p class="mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; line-height: 1.6; opacity: 0.9;">${series.synopsis}</p>
-                  <div class="grid grid-cols-2 gap-4 text-sm mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">
-                    <div>
-                      <span class="opacity-70">Episodios:</span>
-                      <span class="ml-2 font-semibold">${series.episodes}</span>
                     </div>
-                    <div>
-                      <span class="opacity-70">Duración:</span>
-                      <span class="ml-2 font-semibold">${series.duration}</span>
-                    </div>
-                  </div>
-                  ${appState.currentUser && !appState.isGuest ? `
-                    <button 
-                      id="addToListBtn"
-                      class="w-full py-3 rounded-lg font-semibold transition-all hover:opacity-90 ripple"
-                      style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-                    >
-                      + Agregar a Mi Lista
-                    </button>
-                  ` : ''}
-                </section>
-                
-                <section class="mb-6 p-4 rounded-lg" style="background-color: rgba(31, 41, 55, 0.6);">
-                  <h3 class="mb-3 font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px;">Calificación</h3>
-                  ${series.ratingCount > 0 ? `
-                    <p class="mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; color: ${accentColor};">★ ${series.rating.toFixed(1)} <span style="font-size: ${baseFontSize * 0.875}px; opacity: 0.7;">(${series.ratingCount} calificaciones)</span></p>
-                  ` : `
-                    <p class="mb-2 opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Sin calificaciones aún</p>
-                  `}
-                  ${appState.currentUser && !appState.isGuest ? `
-                    <div class="flex gap-2">
-                      ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(rating => `
-                        <button class="star-rating ${userRating?.rating === rating ? 'opacity-100' : 'opacity-40'}" data-rating="${rating}" style="font-size: ${baseFontSize * 1.5}px; color: ${accentColor};">★</button>
-                      `).join('')}
-                    </div>
-                    ${userRating ? `<p class="mt-2 text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Tu calificación: ${userRating.rating}/10</p>` : ''}
-                  ` : `
-                    <p class="text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Inicia sesión para calificar</p>
-                  `}
-                </section>
-                
-                <section class="mb-6">
-                  <h3 class="mb-3 font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px;">Comunidad</h3>
-                  <div id="chatContainer" class="space-y-3 mb-4 max-h-80 overflow-y-auto p-4 rounded-lg" style="background-color: rgba(31, 41, 55, 0.4);">
-                    ${messages.length > 0 ? messages.map(msg => {
-                      const msgProfile = getUserProfile(msg.user_id);
-                      let avatar = '👤';
-                      if (msgProfile?.profile_picture) {
-                        if (msgProfile.profile_picture.startsWith('avatar-')) {
-                          const avatarId = msgProfile.profile_picture.replace('avatar-', '');
-                          const avatarData = avatarLibrary.find(a => a.id === avatarId);
-                          if (avatarData) avatar = `<img src="${avatarData.url}" alt="${avatarData.series}" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.parentElement.innerHTML='👤';">`;
-                        }
-                      }
-                      
-                      return `
-                        <div class="chat-bubble">
-                          <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden" style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-size: ${baseFontSize}px;">
-                              ${avatar}
-                            </div>
-                            <div class="flex-1">
-                              <p class="font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">${msg.username}</p>
-                              <img 
-  src="${msg.avatarUrl || 'https://api.dicebear.com/7.x/adventurer/png?seed=default'}"
-  class="w-8 h-8 rounded-full object-cover"
-/>
-
-                              <p style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; opacity: 0.9;">${msg.message}</p>
-                            </div>
-                          </div>
-                        </div>
-                      `;
-                    }).join('') : `
-                      <p class="text-center opacity-50" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">No hay mensajes aún. ¡Sé el primero en comentar!</p>
-                    `}
-                  </div>
-                  
-                  ${appState.currentUser && !appState.isGuest ? `
-                    <form id="chatForm" class="flex gap-2">
-                      <input 
-                        type="text" 
-                        id="chatInput" 
-                        required
-                        placeholder="Escribe tu mensaje..."
-                        class="flex-1 px-4 py-3 rounded-lg input-glow transition-all"
-                        style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-                      />
-                      <button 
-                        type="submit"
-                        id="chatSubmitBtn"
-                        class="px-6 py-3 rounded-lg ripple font-semibold transition-all hover:opacity-90"
-                        style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-                      >
-                        Enviar
-                      </button>
-                    </form>
-                  ` : `
-                    <p class="text-center text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Inicia sesión para participar en la comunidad</p>
-                  `}
-                </section>
-              </div>
-              
-              <div class="md:col-span-1">
-                <section class="mb-6">
-                  <h3 class="mb-3 font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px;">Episodios</h3>
-                  <div class="space-y-2">
-                    ${episodes.map(ep => {
-                      const watched = userEpisodes.some(ue => ue.episode_number === ep && ue.watched);
-                      return `
-                        <div class="flex items-center justify-between p-3 rounded-lg transition-all hover:opacity-80" style="background-color: rgba(31, 41, 55, 0.6);">
-                          <span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">Episodio ${ep}</span>
-                          ${appState.currentUser && !appState.isGuest ? `
-                            <button class="eye-toggle ${watched ? 'watched' : ''}" data-episode="${ep}">
-                              <svg class="w-6 h-6 eye-icon ${watched ? 'watched' : ''}" fill="currentColor" viewBox="0 0 24 24">
-                                ${watched ? 
-                                  '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>' :
-                                  '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>'
-                                }
-                              </svg>
-                            </button>
-                          ` : `
-                            <svg class="w-6 h-6 opacity-30" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
-                            </svg>
-                          `}
-                        </div>
-                      `;
-                    }).join('')}
-                  </div>
-                  ${appState.isGuest ? `
-                    <p class="mt-3 text-sm text-center opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Crea una cuenta para marcar episodios</p>
-                  ` : ''}
-                </section>
-              </div>
-            </div>
-          </main>
-        </div>
-      `;
-    }
-    
-    function renderPollsScreen() {
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const bgColor = window.elementSdk?.config?.background_color || defaultConfig.background_color;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      
-      const polls = appState.userData.filter(d => d.type === 'poll');
-      const seriesOfMonth = appState.userData.filter(d => d.type === 'series_of_month');
-      const allVotes = appState.userData.filter(d => d.type === 'poll_vote');
-      const userVotes = allVotes.filter(v => v.user_id === appState.currentUser?.id);
-      
-      const isAdmin = ADMIN_EMAILS.includes(appState.currentUser?.email);
-      
-      return `
-        <div class="h-full w-full overflow-auto smooth-scroll" style="background-color: ${bgColor};">
-          <header class="sticky top-0 z-50 px-6 py-4 flex justify-between items-center" style="background: linear-gradient(180deg, ${bgColor} 0%, rgba(17, 24, 39, 0.95) 100%); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
-            <button id="backToHome" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background-color: rgba(31, 41, 55, 0.8);">
-              <svg class="w-6 h-6" fill="white" viewBox="0 0 24 24">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-              </svg>
-            </button>
-            <h1 class="gradient-text" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.75}px; font-weight: 700;">Comunidad</h1>
-            <div class="w-10"></div>
-          </header>
-          
-          <main class="desktop-container px-6 py-6">
-            <section class="mb-8">
-              <div class="flex justify-between items-center mb-4">
-                <h2 style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; font-weight: 600; color: ${accentColor};">Serie del Mes</h2>
-                ${isAdmin ? `
-                  <button id="addSeriesBtn" class="px-4 py-2 rounded-lg transition-all hover:opacity-80" style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">
-                    + Añadir
-                  </button>
-                ` : ''}
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                ${seriesOfMonth.length > 0 ? seriesOfMonth.map(som => `
-                  <div class="series-card rounded-lg p-4">
-                    <div class="flex items-start justify-between mb-2">
-                      <h3 class="font-bold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px;">${som.series_title}</h3>
-                      ${isAdmin ? `
-                        <button class="delete-series-btn text-red-500 hover:text-red-400 transition-all" data-backend-id="${som.__backendId}">
-                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                          </svg>
-                        </button>
-                      ` : ''}
-                    </div>
-                    <p class="opacity-70 mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${som.genre}</p>
-                    <p class="opacity-90" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; line-height: 1.5;">${som.description}</p>
-                  </div>
-                `).join('') : `
-                  <p class="opacity-50 col-span-2 text-center py-8" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">No hay series destacadas este mes</p>
-                `}
+                  `;
+                }).join('')}
               </div>
             </section>
             
+            <!-- Encuestas -->
             <section>
-              <div class="flex justify-between items-center mb-4">
-                <h2 style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; font-weight: 600; color: ${accentColor};">Encuestas</h2>
+              <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Encuestas</h2>
                 ${isAdmin ? `
-                  <button id="createPollBtn" class="px-4 py-2 rounded-lg transition-all hover:opacity-80" style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">
-                    + Nueva Encuesta
+                  <button id="add-poll-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-4 py-2 rounded-lg ripple-effect transition">
+                    + Crear Encuesta
                   </button>
                 ` : ''}
               </div>
-              <div class="space-y-4">
-                ${polls.length > 0 ? polls.map(poll => {
-                  const options = [poll.option_1, poll.option_2, poll.option_3, poll.option_4].filter(o => o);
-                  const pollVotes = allVotes.filter(v => v.poll_id === poll.poll_id);
-                  const userVote = userVotes.find(v => v.poll_id === poll.poll_id);
+              
+              ${polls.length === 0 ? '<p class="text-gray-400">No hay encuestas activas</p>' : ''}
+              
+              <div class="space-y-6">
+                ${polls.map(poll => {
+                  const options = JSON.parse(poll.poll_options || '[]');
+                  const pollVotes = state.allRecords.filter(r => r.poll_vote_poll_id === poll.poll_id);
+                  const userVote = userVotes.find(v => v.poll_vote_poll_id === poll.poll_id);
+                  const hasVoted = !!userVote;
                   const totalVotes = pollVotes.length;
                   
-                  const voteCounts = {};
-                  options.forEach(opt => voteCounts[opt] = 0);
-                  pollVotes.forEach(v => {
-                    if (voteCounts[v.option] !== undefined) voteCounts[v.option]++;
-                  });
-                  
                   return `
-                    <div class="series-card rounded-lg p-4">
-                      <div class="flex items-start justify-between mb-3">
-                        <h3 class="font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.125}px;">${poll.question}</h3>
+                    <div class="bg-gray-800 rounded-xl p-6">
+                      <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-xl font-bold">${poll.poll_title}</h3>
                         ${isAdmin ? `
-                          <button class="delete-poll-btn text-red-500 hover:text-red-400 transition-all" data-backend-id="${poll.__backendId}">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                            </svg>
+                          <button class="delete-poll-btn text-red-500 hover:text-red-400 font-bold transition" data-record-id="${poll.__backendId}">
+                            Eliminar
                           </button>
                         ` : ''}
                       </div>
-                      <div class="space-y-2">
-                        ${options.map(option => {
-                          const votes = voteCounts[option];
-                          const percentage = totalVotes > 0 ? (votes / totalVotes * 100).toFixed(1) : 0;
-                          const isUserVote = userVote?.option === option;
+                      
+                      <div class="space-y-3">
+                        ${options.map((option, idx) => {
+                          const optionVotes = pollVotes.filter(v => v.poll_vote_option === option).length;
+                          const percentage = totalVotes > 0 ? Math.round((optionVotes / totalVotes) * 100) : 0;
+                          const isSelected = userVote?.poll_vote_option === option;
                           
                           return `
-                            <button 
-                              class="poll-option w-full text-left p-3 rounded-lg transition-all ${userVote ? 'cursor-default' : 'hover:opacity-80'}"
-                              data-poll-id="${poll.poll_id}"
-                              data-option="${option}"
-                              ${userVote ? 'disabled' : ''}
-                              style="background-color: rgba(31, 41, 55, ${isUserVote ? '0.8' : '0.4'}); border: 2px solid ${isUserVote ? accentColor : 'transparent'}; position: relative; overflow: hidden;"
-                            >
-                              <div class="absolute left-0 top-0 h-full transition-all" style="width: ${percentage}%; background: linear-gradient(90deg, ${accentColor}33, transparent);"></div>
-                              <div class="relative flex justify-between items-center">
-                                <span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${option}</span>
-                                ${userVote ? `<span style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor}; font-weight: 600;">${percentage}% (${votes})</span>` : ''}
+                            <button class="poll-option-btn w-full relative overflow-hidden bg-gray-700 hover:bg-gray-600 rounded-lg p-4 transition ${state.isGuest ? 'opacity-50 cursor-not-allowed' : ''} ${isSelected ? 'ring-2 ring-green-500' : ''}" data-poll-id="${poll.poll_id}" data-option="${option}" ${hasVoted || state.isGuest ? 'disabled' : ''}>
+                              ${hasVoted ? `
+                                <div class="absolute inset-0 bg-green-500/20" style="width: ${percentage}%; transition: width 0.3s ease;"></div>
+                              ` : ''}
+                              <div class="relative flex items-center justify-between">
+                                <span class="font-semibold">${option}</span>
+                                ${hasVoted ? `<span class="text-sm font-bold">${percentage}%</span>` : ''}
                               </div>
                             </button>
                           `;
                         }).join('')}
                       </div>
-                      ${userVote ? `
-                        <p class="mt-3 text-sm opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Total de votos: ${totalVotes}</p>
-                      ` : ''}
+                      
+                      <div class="mt-4 text-sm text-gray-400">
+                        ${totalVotes} voto${totalVotes !== 1 ? 's' : ''} total${totalVotes !== 1 ? 'es' : ''}
+                      </div>
                     </div>
                   `;
-                }).join('') : `
-                  <p class="opacity-50 text-center py-8" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px;">No hay encuestas activas</p>
-                `}
+                }).join('')}
               </div>
             </section>
           </main>
         </div>
       `;
-    }
-    
-    function renderProfileScreen() {
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const bgColor = window.elementSdk?.config?.background_color || defaultConfig.background_color;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
       
-      let userAvatar = '👤';
-      let userName = appState.isGuest ? 'Invitado' : (appState.userProfile?.display_name || appState.currentUser?.email?.split('@')[0] || 'Usuario');
+      document.getElementById('back-btn').addEventListener('click', () => navigateTo('home'));
       
-      if (appState.userProfile?.profile_picture) {
-        if (appState.userProfile.profile_picture.startsWith('avatar-')) {
-          const avatarId = appState.userProfile.profile_picture.replace('avatar-', '');
-          const avatar = avatarLibrary.find(a => a.id === avatarId);
-          if (avatar) userAvatar = avatar.emoji;
-        }
-      }
-      
-      const userRatings = appState.userData.filter(d => d.type === 'rating' && d.user_id === appState.currentUser?.id);
-      const watchedEpisodes = appState.userData.filter(d => d.type === 'episode' && d.user_id === appState.currentUser?.id && d.watched);
-      
-      return `
-        <div class="h-full w-full overflow-auto smooth-scroll" style="background-color: ${bgColor};">
-          <header class="sticky top-0 z-50 px-6 py-4 flex justify-between items-center" style="background: linear-gradient(180deg, ${bgColor} 0%, rgba(17, 24, 39, 0.95) 100%); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
-            <button id="backToHome" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:opacity-80" style="background-color: rgba(31, 41, 55, 0.8);">
-              <svg class="w-6 h-6" fill="white" viewBox="0 0 24 24">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-              </svg>
-            </button>
-            <h1 class="gradient-text" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.75}px; font-weight: 700;">Perfil</h1>
-            <div class="w-10"></div>
-          </header>
-          
-          <main class="desktop-container px-6 py-6 max-w-2xl mx-auto">
-            <section class="mb-8 text-center">
-              <div class="w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-size: ${baseFontSize * 3}px;">
-                ${userAvatar}
-              </div>
-              <h2 class="font-bold mb-1" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px;">${userName}</h2>
-              ${!appState.isGuest ? `
-                <p class="opacity-70 mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">${appState.currentUser.email}</p>
-                username: appState.currentUser.username,
-subname: appState.currentUser.subname,
-avatarUrl: appState.currentUser.avatarUrl,
-message,
-timestamp: serverTimestamp()
-
-                <button id="editProfileBtn" class="px-6 py-2 rounded-lg transition-all hover:opacity-80" style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid ${accentColor}; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px; color: ${accentColor};">
-                  Editar Perfil
-                </button>
-              ` : `
-                <p class="opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Modo Invitado</p>
-              `}
-            </section>
-            
-            ${!appState.isGuest ? `
-              <section class="mb-6">
-                <h3 class="mb-4 font-semibold" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.25}px; color: ${accentColor};">Estadísticas</h3>
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="series-card rounded-lg p-4 text-center">
-                    <p class="font-bold mb-1" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 2}px; color: ${accentColor};">${userRatings.length}</p>
-                    <p class="opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Series Calificadas</p>
-                  </div>
-                  <div class="series-card rounded-lg p-4 text-center">
-                    <p class="font-bold mb-1" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 2}px; color: ${accentColor};">${watchedEpisodes.length}</p>
-                    <p class="opacity-70" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Episodios Vistos</p>
-                  </div>
-                </div>
-              </section>
-            ` : ''}
-            
-            <section class="mb-6">
-              <button id="logoutBtn" class="w-full py-3 rounded-lg transition-all hover:opacity-80" style="background-color: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: #ef4444;">
-                ${appState.isGuest ? 'Volver al Login' : 'Cerrar Sesión'}
-              </button>
-            </section>
-          </main>
-        </div>
-      `;
-    }
-    
-    function render() {
-      const app = document.getElementById('app');
-      
-      switch (appState.currentScreen) {
-        case 'splash':
-          app.innerHTML = renderSplashScreen();
-          break;
-        case 'login':
-          app.innerHTML = renderLoginScreen();
-          attachLoginHandlers();
-          break;
-        case 'home':
-          app.innerHTML = renderHomeScreen();
-          attachHomeHandlers();
-          break;
-        case 'series':
-          app.innerHTML = renderSeriesScreen();
-          attachSeriesHandlers();
-          break;
-        case 'polls':
-          app.innerHTML = renderPollsScreen();
-          attachPollsHandlers();
-          break;
-        case 'profile':
-          app.innerHTML = renderProfileScreen();
-          attachProfileHandlers();
-          break;
-      }
-    }
-    
-    function attachLoginHandlers() {
-      const loginForm = document.getElementById('loginForm');
-      const signupBtn = document.getElementById('signupBtn');
-      const guestBtn = document.getElementById('guestBtn');
-      
-      if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          const submitBtn = document.getElementById('loginSubmitBtn');
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Cargando...';
-          
-          const email = document.getElementById('email').value;
-          const password = document.getElementById('password').value;
-          
-          try {
-            const { signInWithEmailAndPassword } = window.firebaseAuthFunctions;
-            const userCredential = await signInWithEmailAndPassword(window.firebaseAuth, email, password);
-          const result = await signInWithEmailAndPassword(auth, email, password);
-const user = result.user;
-
-appState.currentUser = {
-  id: user.uid,
-  email: user.email,
-  username: user.email.split("@")[0],
-  avatarUrl: "https://api.dicebear.com/7.x/adventurer/png?seed=" + user.uid,
-  subname: "fan de KYB"
-};
-
-            };
-            appState.isGuest = false;
-            
-            const profile = getUserProfile(appState.currentUser.id);
-            if (profile) {
-              appState.userProfile = profile;
-            }
-            
-            appState.currentScreen = 'home';
-            render();
-          } catch (error) {
-            showToast('Error al iniciar sesión. Verifica tus credenciales.', 'error');
-            submitBtn.disabled = false;
-            submitBtn.textContent = window.elementSdk?.config?.login_button || defaultConfig.login_button;
-          }
-        });
-      }
-      
-      if (signupBtn) {
-        signupBtn.addEventListener('click', async () => {
-          const email = document.getElementById('email').value;
-          const password = document.getElementById('password').value;
-          
-          if (!email || !password) {
-            showToast('Por favor completa los campos', 'error');
-            return;
-          }
-          
-          if (password.length < 6) {
-            showToast('La contraseña debe tener al menos 6 caracteres', 'error');
-            return;
-          }
-          
-          if (appState.recordCount >= 999) {
-            showToast('Límite de registros alcanzado (999). Por favor contacta soporte.', 'error');
-            return;
-          }
-          
-          signupBtn.disabled = true;
-          signupBtn.textContent = 'Creando...';
-          
-          try {
-            const { createUserWithEmailAndPassword } = window.firebaseAuthFunctions;
-            const userCredential = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
-            const result = await signInWithEmailAndPassword(auth, email, password);
-const user = result.user;
-
-appState.currentUser = {
-  id: user.uid,
-  email: user.email,
-  username: user.email.split("@")[0],
-  avatarUrl: "https://api.dicebear.com/7.x/adventurer/png?seed=" + user.uid,
-  subname: "fan de KYB"
-};
-
-            };
-            appState.isGuest = false;
-            
-            const result = await window.dataSdk.create({
-              type: 'user_profile',
-              user_id: appState.currentUser.id,
-              display_name: email.split('@')[0],
-              profile_picture: 'avatar-bad-buddy'
-            });
-            
-            if (result.isError) {
-              showToast('Error al crear perfil', 'error');
-            } else {
-              showToast('¡Cuenta creada con éxito!', 'success');
-            }
-            
-            appState.currentScreen = 'home';
-            render();
-          } catch (error) {
-            showToast('Error al crear cuenta. El email puede estar en uso.', 'error');
-            signupBtn.disabled = false;
-            signupBtn.textContent = window.elementSdk?.config?.signup_button || defaultConfig.signup_button;
-          }
-        });
-      }
-      
-      if (guestBtn) {
-        guestBtn.addEventListener('click', () => {
-          appState.currentUser = { id: 'guest-' + Date.now(), email: 'guest@kyb.com' };
-          appState.isGuest = true;
-          appState.currentScreen = 'home';
-          render();
-        });
-      }
-    }
-    
-    function attachHomeHandlers() {
-      const seriesCards = document.querySelectorAll('[data-series-id]');
-      const pollsBtn = document.getElementById('pollsBtn');
-      const profileBtn = document.getElementById('profileBtn');
-      
-      seriesCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const seriesId = card.getAttribute('data-series-id');
-          appState.selectedSeries = seriesDatabase.find(s => s.id === seriesId);
-          appState.currentScreen = 'series';
-          render();
-        });
+      document.getElementById('add-series-month-btn')?.addEventListener('click', () => {
+        showSeriesSelector('month');
       });
       
-      if (pollsBtn) {
-        pollsBtn.addEventListener('click', () => {
-          appState.hasUnreadPoll = false;
-          appState.currentScreen = 'polls';
-          render();
-        });
-      }
-      
-      if (profileBtn) {
-        profileBtn.addEventListener('click', () => {
-          appState.currentScreen = 'profile';
-          render();
-        });
-      }
-    }
-    
-    async function attachSeriesHandlers() {
-      const backBtn = document.getElementById('backBtn');
-      const chatForm = document.getElementById('chatForm');
-      const eyeToggles = document.querySelectorAll('.eye-toggle');
-      const starRatings = document.querySelectorAll('.star-rating');
-      const addToListBtn = document.getElementById('addToListBtn');
-      
-      if (backBtn) {
-        backBtn.addEventListener('click', () => {
-          appState.currentScreen = 'home';
-          render();
-        });
-      }
-      
-      if (addToListBtn) {
-        addToListBtn.addEventListener('click', async () => {
-          if (appState.recordCount >= 999) {
-            showToast('Límite de registros alcanzado (999)', 'error');
-            return;
-          }
-          
-          addToListBtn.disabled = true;
-          addToListBtn.textContent = 'Agregando...';
-          
-          const existingInList = appState.userData.find(
-            d => d.type === 'my_list' && 
-            d.series_id === appState.selectedSeries.id && 
-            d.user_id === appState.currentUser.id
-          );
-          
-          if (existingInList) {
-            showToast('Ya está en tu lista', 'info');
-            addToListBtn.disabled = false;
-            addToListBtn.textContent = '✓ En Mi Lista';
-            return;
-          }
-          
-          const result = await window.dataSdk.create({
-            type: 'my_list',
-            series_id: appState.selectedSeries.id,
-            user_id: appState.currentUser.id,
-            added_at: Date.now()
-          });
-          
-          if (result.isOk) {
-            showToast('¡Agregado a tu lista!', 'success');
-            addToListBtn.textContent = '✓ En Mi Lista';
-          } else {
-            showToast('Error al agregar', 'error');
-            addToListBtn.disabled = false;
-            addToListBtn.textContent = '+ Agregar a Mi Lista';
-          }
-        });
-      }
-      
-      if (chatForm) {
-        chatForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          if (appState.recordCount >= 999) {
-            showToast('Límite de registros alcanzado (999)', 'error');
-            return;
-          }
-          
-          const chatInput = document.getElementById('chatInput');
-          const submitBtn = document.getElementById('chatSubmitBtn');
-          const message = chatInput.value.trim();
-          
-          if (!message) return;
-          
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Enviando...';
-          
-          const profile = getUserProfile(appState.currentUser.id);
-          const username = profile?.display_name || appState.currentUser.email.split('@')[0];
-          
-          const result = await window.dataSdk.create({
-            type: 'message',
-            series_id: appState.selectedSeries.id,
-            user_id: appState.currentUser.id,
-            username: username,
-            message: message,
-            timestamp: serverTimestamp()
-          });
-          
-          if (result.isOk) {
-            chatInput.value = '';
-            showToast('Mensaje enviado', 'success');
-          } else {
-            showToast('Error al enviar mensaje', 'error');
-          }
-          
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Enviar';
-        });
-      }
-      
-      eyeToggles.forEach(toggle => {
-        toggle.addEventListener('click', async () => {
-          if (appState.recordCount >= 999) {
-            showToast('Límite de registros alcanzado (999)', 'error');
-            return;
-          }
-          
-          toggle.disabled = true;
-          
-          const episode = parseInt(toggle.getAttribute('data-episode'));
-          const existingEpisode = appState.userData.find(
-            d => d.type === 'episode' && 
-            d.series_id === appState.selectedSeries.id && 
-            d.user_id === appState.currentUser.id && 
-            d.episode_number === episode
-          );
-          
-          if (existingEpisode) {
-            const updated = { ...existingEpisode, watched: !existingEpisode.watched };
-            const result = await window.dataSdk.update(updated);
-            if (result.isError) {
-              showToast('Error al actualizar', 'error');
-            }
-          } else {
-            const result = await window.dataSdk.create({
-              type: 'episode',
-              series_id: appState.selectedSeries.id,
-              user_id: appState.currentUser.id,
-              episode_number: episode,
-              watched: true
-            });
-            if (result.isError) {
-              showToast('Error al marcar episodio', 'error');
-            }
-          }
-          
-          toggle.disabled = false;
-        });
+      document.getElementById('add-poll-btn')?.addEventListener('click', () => {
+        showPollCreator();
       });
       
-      starRatings.forEach(star => {
-        star.addEventListener('click', async () => {
-          if (appState.recordCount >= 999) {
-            showToast('Límite de registros alcanzado (999)', 'error');
-            return;
-          }
+      document.querySelectorAll('.delete-series-month-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const recordId = btn.dataset.recordId;
+          const record = state.allRecords.find(r => r.__backendId === recordId);
           
-          const rating = parseInt(star.getAttribute('data-rating'));
-          const existingRating = appState.userData.find(
-            d => d.type === 'rating' && 
-            d.series_id === appState.selectedSeries.id && 
-            d.user_id === appState.currentUser.id
-          );
-          
-          if (existingRating) {
-            const updated = { ...existingRating, rating: rating };
-            const result = await window.dataSdk.update(updated);
-            if (result.isOk) {
-              showToast('Calificación actualizada', 'success');
-            } else {
-              showToast('Error al actualizar', 'error');
-            }
-          } else {
-            const result = await window.dataSdk.create({
-              type: 'rating',
-              series_id: appState.selectedSeries.id,
-              user_id: appState.currentUser.id,
-              rating: rating
-            });
-            if (result.isOk) {
-              showToast('¡Calificación guardada!', 'success');
-            } else {
-              showToast('Error al guardar', 'error');
-            }
-          }
-        });
-      });
-    }
-    
-    function attachPollsHandlers() {
-      const backToHome = document.getElementById('backToHome');
-      const createPollBtn = document.getElementById('createPollBtn');
-      const addSeriesBtn = document.getElementById('addSeriesBtn');
-      const pollOptions = document.querySelectorAll('.poll-option');
-      const deletePollBtns = document.querySelectorAll('.delete-poll-btn');
-      const deleteSeriesBtns = document.querySelectorAll('.delete-series-btn');
-      
-      if (backToHome) {
-        backToHome.addEventListener('click', () => {
-          appState.currentScreen = 'home';
-          render();
-        });
-      }
-      
-      if (createPollBtn) {
-        createPollBtn.addEventListener('click', () => {
-          showCreatePollModal();
-        });
-      }
-      
-      if (addSeriesBtn) {
-        addSeriesBtn.addEventListener('click', () => {
-          showAddSeriesModal();
-        });
-      }
-      
-      pollOptions.forEach(option => {
-        option.addEventListener('click', async (e) => {
-          if (e.target.disabled) return;
-          
-          if (appState.recordCount >= 999) {
-            showToast('Límite de registros alcanzado (999)', 'error');
-            return;
-          }
-          
-          option.disabled = true;
-          
-          const pollId = option.getAttribute('data-poll-id');
-          const selectedOption = option.getAttribute('data-option');
-          
-          const result = await window.dataSdk.create({
-            type: 'poll_vote',
-            poll_id: pollId,
-            user_id: appState.currentUser.id,
-            option: selectedOption,
-            voted_at: Date.now()
-          });
-          
-          if (result.isOk) {
-            showToast('¡Voto registrado!', 'success');
-          } else {
-            showToast('Error al votar', 'error');
-            option.disabled = false;
-          }
-        });
-      });
-      
-      deletePollBtns.forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          
-          btn.disabled = true;
-          btn.style.opacity = '0.5';
-          
-          const backendId = btn.getAttribute('data-backend-id');
-          const poll = appState.userData.find(d => d.__backendId === backendId);
-          if (poll) {
-            const result = await window.dataSdk.delete(poll);
-            if (result.isOk) {
-              showToast('Encuesta eliminada', 'success');
-            } else {
-              showToast('Error al eliminar', 'error');
-              btn.disabled = false;
-              btn.style.opacity = '1';
-            }
-          }
-        });
-      });
-      
-      deleteSeriesBtns.forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          
-          btn.disabled = true;
-          btn.style.opacity = '0.5';
-          
-          const backendId = btn.getAttribute('data-backend-id');
-          const series = appState.userData.find(d => d.__backendId === backendId);
-          if (series) {
-            const result = await window.dataSdk.delete(series);
+          if (record) {
+            btn.disabled = true;
+            btn.textContent = 'Eliminando...';
+            
+            const result = await window.dataSdk.delete(record);
             if (result.isOk) {
               showToast('Serie eliminada', 'success');
             } else {
               showToast('Error al eliminar', 'error');
               btn.disabled = false;
-              btn.style.opacity = '1';
+              btn.textContent = 'Eliminar';
             }
+          }
+        });
+      });
+      
+      document.querySelectorAll('.delete-poll-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const recordId = btn.dataset.recordId;
+          const record = state.allRecords.find(r => r.__backendId === recordId);
+          
+          if (record) {
+            btn.disabled = true;
+            btn.textContent = 'Eliminando...';
+            
+            const result = await window.dataSdk.delete(record);
+            if (result.isOk) {
+              showToast('Encuesta eliminada', 'success');
+            } else {
+              showToast('Error al eliminar', 'error');
+              btn.disabled = false;
+              btn.textContent = 'Eliminar';
+            }
+          }
+        });
+      });
+      
+      document.querySelectorAll('.view-series-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const seriesId = btn.dataset.seriesId;
+          const series = SERIES_DATA.find(s => s.id === seriesId);
+          if (series) navigateTo('series', series);
+        });
+      });
+      
+      document.querySelectorAll('.poll-option-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (state.isGuest) {
+            showToast('Inicia sesión para votar', 'info');
+            return;
+          }
+          
+          const pollId = btn.dataset.pollId;
+          const option = btn.dataset.option;
+          
+          if (state.allRecords.length >= 999) {
+            showToast('Límite de 999 registros alcanzado', 'error');
+            return;
+          }
+          
+          btn.disabled = true;
+          
+          const result = await window.dataSdk.create({
+            poll_vote_poll_id: pollId,
+            poll_vote_option: option,
+            user_profile: state.user.uid
+          });
+          
+          if (result.isOk) {
+            showToast('Voto registrado', 'success');
+          } else {
+            showToast('Error al votar', 'error');
+            btn.disabled = false;
           }
         });
       });
     }
     
-    function attachProfileHandlers() {
-      const backToHome = document.getElementById('backToHome');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const editProfileBtn = document.getElementById('editProfileBtn');
-      
-      if (backToHome) {
-        backToHome.addEventListener('click', () => {
-          appState.currentScreen = 'home';
-          render();
-        });
-      }
-      
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-          if (!appState.isGuest) {
-            const { signOut } = window.firebaseAuthFunctions;
-            await signOut(window.firebaseAuth);
-          }
-          appState.currentUser = null;
-          appState.userProfile = null;
-          appState.isGuest = false;
-          appState.currentScreen = 'login';
-          render();
-        });
-      }
-      
-      if (editProfileBtn) {
-        editProfileBtn.addEventListener('click', () => {
-          showEditProfileModal();
-        });
-      }
-    }
-    
-    function showCreatePollModal() {
-      if (appState.recordCount >= 999) {
-        showToast('Límite de registros alcanzado (999)', 'error');
-        return;
-      }
-      
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      
+    function showSeriesSelector(type) {
       const modal = document.createElement('div');
-      modal.id = 'pollModal';
-      modal.className = 'fixed inset-0 z-50 flex items-center justify-center px-6 modal-overlay';
-      
+      modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6 fade-in';
       modal.innerHTML = `
-        <div class="w-full max-w-md rounded-lg p-6" style="background-color: #1f2937;">
-          <h2 class="font-bold mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; color: ${accentColor};">Nueva Encuesta</h2>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Pregunta</label>
-            <input 
-              type="text" 
-              id="pollQuestion" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-              placeholder="¿Tu serie BL favorita?"
-            />
-          </div>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Opción 1</label>
-            <input 
-              type="text" 
-              id="pollOption1" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            />
-          </div>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Opción 2</label>
-            <input 
-              type="text" 
-              id="pollOption2" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            />
-          </div>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Opción 3 (opcional)</label>
-            <input 
-              type="text" 
-              id="pollOption3" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            />
-          </div>
-          
-          <div class="mb-6">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Opción 4 (opcional)</label>
-            <input 
-              type="text" 
-              id="pollOption4" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            />
-          </div>
-          
-          <div class="flex gap-3">
-            <button 
-              id="savePollBtn"
-              class="flex-1 py-3 rounded-lg font-semibold transition-all hover:opacity-90"
-              style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            >
-              Crear
+        <div class="bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-auto slide-up">
+          <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-xl font-bold">Seleccionar Serie</h3>
+            <button class="close-modal text-gray-400 hover:text-white transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
             </button>
-            <button 
-              id="cancelPollBtn"
-              class="flex-1 py-3 rounded-lg transition-all hover:opacity-80"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid ${accentColor}; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: ${accentColor};"
-            >
-              Cancelar
-            </button>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-2 gap-4">
+              ${SERIES_DATA.map(series => `
+                <button class="series-select-btn bg-gray-700 hover:bg-gray-600 rounded-lg p-4 transition text-left" data-series-id="${series.id}">
+                  <div class="aspect-[2/3] bg-gray-600 rounded-lg mb-3 overflow-hidden">
+                    <img src="${series.image}" alt="${series.title}" class="w-full h-full object-cover">
+                  </div>
+                  <h4 class="font-bold text-sm mb-1">${series.title}</h4>
+                  <p class="text-xs text-gray-400">${series.genre} • ${series.country}</p>
+                </button>
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
       
       document.body.appendChild(modal);
       
-      const saveBtn = modal.querySelector('#savePollBtn');
-      const cancelBtn = modal.querySelector('#cancelPollBtn');
+      modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+      });
       
-      saveBtn.addEventListener('click', async () => {
-        const question = modal.querySelector('#pollQuestion').value.trim();
-        const option1 = modal.querySelector('#pollOption1').value.trim();
-        const option2 = modal.querySelector('#pollOption2').value.trim();
-        const option3 = modal.querySelector('#pollOption3').value.trim();
-        const option4 = modal.querySelector('#pollOption4').value.trim();
+      modal.querySelectorAll('.series-select-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const seriesId = btn.dataset.seriesId;
+          
+          if (state.allRecords.length >= 999) {
+            showToast('Límite de 999 registros alcanzado', 'error');
+            return;
+          }
+          
+          btn.disabled = true;
+          
+          const result = await window.dataSdk.create({
+            series_month_series_id: seriesId,
+            series_month_created_by: state.user.uid
+          });
+          
+          if (result.isOk) {
+            showToast('Serie agregada', 'success');
+            modal.remove();
+          } else {
+            showToast('Error al agregar serie', 'error');
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+    
+    function showPollCreator() {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6 fade-in';
+      modal.innerHTML = `
+        <div class="bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full slide-up">
+          <div class="border-b border-gray-700 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-xl font-bold">Crear Encuesta</h3>
+            <button class="close-modal text-gray-400 hover:text-white transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <form id="poll-creator-form" class="p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-semibold mb-2">Título de la Encuesta</label>
+              <input type="text" id="poll-title" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-semibold mb-2">Opciones (2-4)</label>
+              <input type="text" id="poll-option-1" placeholder="Opción 1" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition mb-2">
+              <input type="text" id="poll-option-2" placeholder="Opción 2" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition mb-2">
+              <input type="text" id="poll-option-3" placeholder="Opción 3 (opcional)" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition mb-2">
+              <input type="text" id="poll-option-4" placeholder="Opción 4 (opcional)" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition">
+            </div>
+            
+            <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg ripple-effect transition">
+              Crear Encuesta
+            </button>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+      });
+      
+      modal.querySelector('#poll-creator-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        if (!question || !option1 || !option2) {
-          showToast('Completa al menos la pregunta y 2 opciones', 'error');
+        const title = document.getElementById('poll-title').value.trim();
+        const option1 = document.getElementById('poll-option-1').value.trim();
+        const option2 = document.getElementById('poll-option-2').value.trim();
+        const option3 = document.getElementById('poll-option-3').value.trim();
+        const option4 = document.getElementById('poll-option-4').value.trim();
+        
+        const options = [option1, option2, option3, option4].filter(o => o);
+        
+        if (options.length < 2) {
+          showToast('Debes agregar al menos 2 opciones', 'error');
           return;
         }
         
-        saveBtn.disabled = true;
-        saveBtn.textContent = 'Creando...';
+        if (state.allRecords.length >= 999) {
+          showToast('Límite de 999 registros alcanzado', 'error');
+          return;
+        }
+        
+        const btn = e.target.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Creando...';
         
         const result = await window.dataSdk.create({
-          type: 'poll',
-          poll_id: 'poll-' + Date.now(),
-          question: question,
-          option_1: option1,
-          option_2: option2,
-          option_3: option3 || null,
-          option_4: option4 || null,
-          created_at: Date.now()
+          poll_id: 'poll_' + Date.now(),
+          poll_title: title,
+          poll_options: JSON.stringify(options),
+          poll_created_by: state.user.uid
         });
         
         if (result.isOk) {
@@ -1653,323 +1495,314 @@ appState.currentUser = {
           modal.remove();
         } else {
           showToast('Error al crear encuesta', 'error');
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'Crear';
+          btn.disabled = false;
+          btn.textContent = 'Crear Encuesta';
         }
-      });
-      
-      cancelBtn.addEventListener('click', () => {
-        modal.remove();
       });
     }
     
-    function showAddSeriesModal() {
-      if (appState.recordCount >= 999) {
-        showToast('Límite de registros alcanzado (999)', 'error');
-        return;
-      }
+    // Render profile
+    function renderProfile() {
+      const app = document.getElementById('app');
       
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
+      const userProfile = state.allRecords.find(r => r.user_profile === state.user?.uid);
+      const username = userProfile?.username || state.user?.displayName || 'Usuario';
+      const subname = userProfile?.subname || '';
+      const email = userProfile?.email || state.user?.email || '';
+      const avatarUrl = userProfile?.avatar_url || '';
       
-      const modal = document.createElement('div');
-      modal.id = 'seriesModal';
-      modal.className = 'fixed inset-0 z-50 flex items-center justify-center px-6 modal-overlay';
+      const userRatings = state.allRecords.filter(r => r.rating_series_id && r.user_profile === state.user?.uid);
+      const userEpisodes = state.allRecords.filter(r => r.episode_series_id && r.watched && r.user_profile === state.user?.uid);
       
-      modal.innerHTML = `
-        <div class="w-full max-w-md rounded-lg p-6" style="background-color: #1f2937;">
-          <h2 class="font-bold mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; color: ${accentColor};">Nueva Serie del Mes</h2>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Título</label>
-            <input 
-              type="text" 
-              id="seriesTitle" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            />
-          </div>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Género</label>
-            <input 
-              type="text" 
-              id="seriesGenre" 
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-              placeholder="BL / GL"
-            />
-          </div>
-          
-          <div class="mb-6">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Descripción</label>
-            <textarea 
-              id="seriesDescription" 
-              rows="3"
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white; resize: none;"
-            ></textarea>
-          </div>
-          
-          <div class="flex gap-3">
-            <button 
-              id="saveSeriesBtn"
-              class="flex-1 py-3 rounded-lg font-semibold transition-all hover:opacity-90"
-              style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            >
-              Guardar
-            </button>
-            <button 
-              id="cancelSeriesBtn"
-              class="flex-1 py-3 rounded-lg transition-all hover:opacity-80"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid ${accentColor}; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: ${accentColor};"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(modal);
-      
-      const saveBtn = modal.querySelector('#saveSeriesBtn');
-      const cancelBtn = modal.querySelector('#cancelSeriesBtn');
-      
-      saveBtn.addEventListener('click', async () => {
-        const title = modal.querySelector('#seriesTitle').value.trim();
-        const genre = modal.querySelector('#seriesGenre').value.trim();
-        const description = modal.querySelector('#seriesDescription').value.trim();
-        
-        if (!title || !genre || !description) {
-          showToast('Completa todos los campos', 'error');
-          return;
-        }
-        
-        saveBtn.disabled = true;
-        saveBtn.textContent = 'Guardando...';
-        
-        const result = await window.dataSdk.create({
-          type: 'series_of_month',
-          series_title: title,
-          genre: genre,
-          description: description,
-          created_at: Date.now()
-        });
-        
-        if (result.isOk) {
-          showToast('Serie agregada', 'success');
-          modal.remove();
-        } else {
-          showToast('Error al agregar serie', 'error');
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'Guardar';
-        }
-      });
-      
-      cancelBtn.addEventListener('click', () => {
-        modal.remove();
-      });
-    }
-    
-    function showEditProfileModal() {
-      if (appState.recordCount >= 999) {
-        showToast('Límite de registros alcanzado (999)', 'error');
-        return;
-      }
-      
-      const customFont = window.elementSdk?.config?.font_family || defaultConfig.font_family;
-      const baseFontSize = window.elementSdk?.config?.font_size || defaultConfig.font_size;
-      const accentColor = window.elementSdk?.config?.accent_color || defaultConfig.accent_color;
-      
-      const currentName = appState.userProfile?.display_name || appState.currentUser.email.split('@')[0];
-      const currentAvatar = appState.userProfile?.profile_picture?.replace('avatar-', '') || 'bad-buddy';
-      
-      const modal = document.createElement('div');
-      modal.id = 'editModal';
-      modal.className = 'fixed inset-0 z-50 flex items-center justify-center px-6 modal-overlay';
-      
-      modal.innerHTML = `
-        <div class="w-full max-w-md rounded-lg p-6 max-h-[90%] overflow-y-auto" style="background-color: #1f2937;">
-          <h2 class="font-bold mb-4" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 1.5}px; color: ${accentColor};">Editar Perfil</h2>
-          
-          <div class="mb-4">
-            <label class="block mb-2" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Nombre</label>
-            <input 
-              type="text" 
-              id="editName" 
-              value="${currentName}"
-              class="w-full px-4 py-3 rounded-lg"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid rgba(16, 185, 129, 0.3); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            />
-          </div>
-          
-          <div class="mb-6">
-            <label class="block mb-3" style="font-family: '${customFont}', sans-serif; font-size: ${baseFontSize * 0.875}px;">Avatar</label>
-            <div class="grid grid-cols-4 gap-3">
-              ${avatarLibrary.map(avatar => `
-                <div 
-                  class="avatar-option w-16 h-16 rounded-full flex items-center justify-center overflow-hidden ${currentAvatar === avatar.id ? 'selected' : ''}"
-                  data-avatar-id="${avatar.id}"
-                  style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-size: ${baseFontSize * 1.5}px;"
-                >
-                  <img src="${avatar.url}" alt="${avatar.series}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='👤';">
-                </div>
-              `).join('')}
+      app.innerHTML = `
+        <div class="h-full w-full overflow-auto">
+          <!-- Header -->
+          <header class="sticky top-0 z-40 glassmorphism border-b border-gray-700">
+            <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <button id="back-btn" class="text-green-500 hover:text-green-400 transition">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </button>
+                <h1 class="text-2xl md:text-3xl font-bold">Mi Perfil</h1>
+              </div>
+              
+              ${!state.isGuest ? `
+                <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-lg ripple-effect transition">
+                  Cerrar Sesión
+                </button>
+              ` : `
+                <button id="login-from-guest-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-lg ripple-effect transition">
+                  Iniciar Sesión
+                </button>
+              `}
             </div>
-          </div>
+          </header>
           
-          <div class="flex gap-3">
-            <button 
-              id="saveProfileBtn"
-              class="flex-1 py-3 rounded-lg font-semibold transition-all hover:opacity-90"
-              style="background: linear-gradient(135deg, ${accentColor}, rgba(236, 72, 153, 0.8)); font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: white;"
-            >
-              Guardar
-            </button>
-            <button 
-              id="cancelEditBtn"
-              class="flex-1 py-3 rounded-lg transition-all hover:opacity-80"
-              style="background-color: rgba(31, 41, 55, 0.8); border: 2px solid ${accentColor}; font-family: '${customFont}', sans-serif; font-size: ${baseFontSize}px; color: ${accentColor};"
-            >
-              Cancelar
-            </button>
-          </div>
+          <main class="max-w-screen-xl mx-auto px-6 py-8">
+            <!-- Profile info -->
+            <div class="bg-gray-800 rounded-2xl p-8 mb-8">
+              <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                <button id="change-avatar-btn" class="w-20 h-20 rounded-full overflow-hidden border-4 border-green-500 hover:scale-110 transition ${avatarUrl ? '' : 'avatar-gradient'} ${state.isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
+                  ${avatarUrl ? `<img src="${avatarUrl}" alt="Avatar" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-white font-bold text-2xl">U</div>'}
+                </button>
+                
+                <div class="flex-1 text-center md:text-left">
+                  <div class="mb-2">
+                    <input type="text" id="username-input" value="${username}" class="text-2xl font-bold bg-transparent border-b-2 border-transparent hover:border-green-500 focus:border-green-500 focus:outline-none transition px-2 ${state.isGuest ? 'opacity-50 cursor-not-allowed' : ''}" ${state.isGuest ? 'disabled' : ''}>
+                  </div>
+                  <div class="mb-2">
+                    <div class="flex items-center gap-2">
+                      <span class="text-gray-400">@</span>
+                      <input type="text" id="subname-input" value="${subname}" placeholder="tu_nombre_usuario" class="text-base text-gray-400 bg-transparent border-b-2 border-transparent hover:border-green-500 focus:border-green-500 focus:outline-none transition px-2 flex-1 ${state.isGuest ? 'opacity-50 cursor-not-allowed' : ''}" ${state.isGuest ? 'disabled' : ''}>
+                    </div>
+                  </div>
+                  ${!state.isGuest ? `<p class="text-sm text-gray-400">${email}</p>` : '<p class="text-sm text-gray-400">Modo Invitado</p>'}
+                </div>
+              </div>
+              
+              ${!state.isGuest ? `
+                <div class="flex gap-4">
+                  <button id="save-profile-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2 rounded-lg ripple-effect transition">
+                    Guardar Cambios
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+              <div class="bg-gray-800 rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-2">Series Calificadas</h3>
+                <p class="text-4xl font-bold text-green-500">${userRatings.length}</p>
+              </div>
+              
+              <div class="bg-gray-800 rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-2">Episodios Vistos</h3>
+                <p class="text-4xl font-bold text-pink-500">${userEpisodes.length}</p>
+              </div>
+            </div>
+            
+            <!-- Mi Lista -->
+            <div class="mb-8">
+              <h2 class="text-2xl font-bold mb-6">Mi Lista</h2>
+              ${(() => {
+                const myListRecords = state.allRecords.filter(r => r.my_list_series_id && r.user_profile === state.user?.uid);
+                
+                if (myListRecords.length === 0) {
+                  return '<div class="bg-gray-800 rounded-xl p-8 text-center text-gray-400">No has agregado series a tu lista aún</div>';
+                }
+                
+                return `
+                  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                    ${myListRecords.map(record => {
+                      const series = SERIES_DATA.find(s => s.id === record.my_list_series_id);
+                      if (!series) return '';
+                      return createSeriesCard(series);
+                    }).join('')}
+                  </div>
+                `;
+              })()}
+            </div>
+            
+            ${state.isGuest ? `
+              <div class="bg-yellow-500/20 border border-yellow-500 rounded-xl p-6 text-center">
+                <p class="text-yellow-500 font-semibold mb-4">Estás en modo invitado. Inicia sesión para guardar tu progreso y personalizar tu perfil.</p>
+                <button id="invite-login-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-lg ripple-effect transition">
+                  Crear Cuenta o Iniciar Sesión
+                </button>
+              </div>
+            ` : ''}
+          </main>
         </div>
       `;
       
-      document.body.appendChild(modal);
+      document.getElementById('back-btn').addEventListener('click', () => navigateTo('home'));
       
-      let selectedAvatar = currentAvatar;
+      document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        await auth.signOut();
+        state.user = null;
+        state.isGuest = false;
+        showToast('Sesión cerrada', 'success');
+        navigateTo('login');
+      });
       
-      const avatarOptions = modal.querySelectorAll('.avatar-option');
-      avatarOptions.forEach(option => {
-        option.addEventListener('click', () => {
-          avatarOptions.forEach(o => o.classList.remove('selected'));
-          option.classList.add('selected');
-          selectedAvatar = option.getAttribute('data-avatar-id');
+      document.getElementById('login-from-guest-btn')?.addEventListener('click', () => {
+        state.isGuest = false;
+        navigateTo('login');
+      });
+      
+      document.getElementById('invite-login-btn')?.addEventListener('click', () => {
+        state.isGuest = false;
+        navigateTo('login');
+      });
+      
+      document.getElementById('change-avatar-btn')?.addEventListener('click', () => {
+        if (state.isGuest) {
+          showToast('Inicia sesión para cambiar avatar', 'info');
+          return;
+        }
+        showAvatarSelector();
+      });
+      
+      // Event listeners for series cards in Mi Lista
+      document.querySelectorAll('.series-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const seriesId = card.dataset.seriesId;
+          const series = SERIES_DATA.find(s => s.id === seriesId);
+          if (series) navigateTo('series', series);
         });
       });
       
-      const saveBtn = modal.querySelector('#saveProfileBtn');
-      const cancelBtn = modal.querySelector('#cancelEditBtn');
-      
-      saveBtn.addEventListener('click', async () => {
-        const newName = modal.querySelector('#editName').value.trim();
-        if (!newName) {
-          showToast('El nombre no puede estar vacío', 'error');
+      document.getElementById('save-profile-btn')?.addEventListener('click', async () => {
+        const newUsername = document.getElementById('username-input').value.trim();
+        const newSubname = document.getElementById('subname-input').value.trim();
+        
+        if (!newUsername) {
+          showToast('El nombre de usuario no puede estar vacío', 'error');
           return;
         }
         
-        saveBtn.disabled = true;
-        saveBtn.textContent = 'Guardando...';
+        const btn = document.getElementById('save-profile-btn');
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
         
-        const existingProfile = getUserProfile(appState.currentUser.id);
+        const existingProfile = state.allRecords.find(r => r.user_profile === state.user.uid);
         
         if (existingProfile) {
-          const updated = {
-            ...existingProfile,
-            display_name: newName,
-            profile_picture: 'avatar-' + selectedAvatar
-          };
-          const result = await window.dataSdk.update(updated);
+          existingProfile.username = newUsername;
+          existingProfile.subname = newSubname;
+          const result = await window.dataSdk.update(existingProfile);
+          
           if (result.isOk) {
             showToast('Perfil actualizado', 'success');
-            modal.remove();
-            render();
           } else {
-            showToast('Error al actualizar', 'error');
-            saveBtn.disabled = false;
-            saveBtn.textContent = 'Guardar';
+            showToast('Error al actualizar perfil', 'error');
           }
         } else {
+          if (state.allRecords.length >= 999) {
+            showToast('Límite de 999 registros alcanzado', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Guardar Cambios';
+            return;
+          }
+          
           const result = await window.dataSdk.create({
-            type: 'user_profile',
-            user_id: appState.currentUser.id,
-            display_name: newName,
-            profile_picture: 'avatar-' + selectedAvatar
+            user_profile: state.user.uid,
+            username: newUsername,
+            subname: newSubname,
+            avatar_series_id: '',
+            avatar_character_id: '',
+            avatar_url: '',
+            email: state.user.email
           });
+          
           if (result.isOk) {
             showToast('Perfil creado', 'success');
-            modal.remove();
-            render();
           } else {
             showToast('Error al crear perfil', 'error');
-            saveBtn.disabled = false;
-            saveBtn.textContent = 'Guardar';
           }
         }
-      });
-      
-      cancelBtn.addEventListener('click', () => {
-        modal.remove();
-      });
-    }
-    
-    async function initialize() {
-      const { onAuthStateChanged } = window.firebaseAuthFunctions;
-      
-      const initResult = await window.dataSdk.init(dataHandler);
-      if (!initResult.isOk) {
-        showToast('Error al inicializar', 'error');
-      }
-      
-      let authChecked = false;
-      
-      onAuthStateChanged(window.firebaseAuth, (user) => {
-        if (authChecked) return;
-        authChecked = true;
         
-        if (user) {
-          appState.currentUser = { id: user.uid, email: user.email };
-          appState.isGuest = false;
+        btn.disabled = false;
+        btn.textContent = 'Guardar Cambios';
+      });
+    }
+    
+    function showAvatarSelector() {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6 fade-in';
+      modal.innerHTML = `
+        <div class="bg-gray-800 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[80vh] overflow-auto slide-up">
+          <div class="sticky top-0 bg-gray-800 border-b border-gray-700 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-xl font-bold">Seleccionar Avatar</h3>
+            <button class="close-modal text-gray-400 hover:text-white transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
           
-          const profile = getUserProfile(appState.currentUser.id);
-          if (profile) {
-            appState.userProfile = profile;
-          }
-          
-          appState.currentScreen = 'home';
-          render();
-        } else {
-          setTimeout(() => {
-            appState.currentScreen = 'login';
-            render();
-          }, 1500);
-        }
+          <div class="p-6 space-y-8">
+            ${AVATAR_LIBRARY.map(seriesGroup => `
+              <div>
+                <h4 class="text-lg font-bold mb-4">${seriesGroup.series}</h4>
+                <div class="flex gap-4 overflow-x-auto pb-2">
+                  ${seriesGroup.characters.map(char => `
+                    <button class="avatar-option flex-shrink-0 w-20 h-20 rounded-full overflow-hidden hover:scale-110 transition border-4 border-transparent hover:border-green-500" data-series="${seriesGroup.series}" data-char-id="${char.id}" data-url="${char.url}">
+                      <img src="${char.url}" alt="${char.name}" class="w-full h-full object-cover">
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      modal.querySelector('.close-modal').addEventListener('click', () => modal.remove());
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
       });
       
-      render();
+      modal.querySelectorAll('.avatar-option').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const series = btn.dataset.series;
+          const charId = btn.dataset.charId;
+          const url = btn.dataset.url;
+          
+          btn.disabled = true;
+          
+          const existingProfile = state.allRecords.find(r => r.user_profile === state.user.uid);
+          
+          if (existingProfile) {
+            existingProfile.avatar_series_id = series;
+            existingProfile.avatar_character_id = charId;
+            existingProfile.avatar_url = url;
+            
+            const result = await window.dataSdk.update(existingProfile);
+            
+            if (result.isOk) {
+              showToast('Avatar actualizado', 'success');
+              modal.remove();
+            } else {
+              showToast('Error al actualizar avatar', 'error');
+              btn.disabled = false;
+            }
+          } else {
+            if (state.allRecords.length >= 999) {
+              showToast('Límite de 999 registros alcanzado', 'error');
+              btn.disabled = false;
+              return;
+            }
+            
+            const result = await window.dataSdk.create({
+              user_profile: state.user.uid,
+              username: state.user.displayName || 'Usuario',
+              subname: '',
+              avatar_series_id: series,
+              avatar_character_id: charId,
+              avatar_url: url,
+              email: state.user.email
+            });
+            
+            if (result.isOk) {
+              showToast('Avatar actualizado', 'success');
+              modal.remove();
+            } else {
+              showToast('Error al crear perfil', 'error');
+              btn.disabled = false;
+            }
+          }
+        });
+      });
     }
     
-    const elementApi = {
-      defaultConfig,
-      onConfigChange: async (config) => {
-        render();
-      },
-      mapToCapabilities: (config) => ({
-        recolorables: [],
-        borderables: [],
-        fontEditable: undefined,
-        fontSizeable: undefined
-      }),
-      mapToEditPanelValues: (config) => new Map([
-        ['app_name', config.app_name || defaultConfig.app_name],
-        ['tagline', config.tagline || defaultConfig.tagline],
-        ['popular_title', config.popular_title || defaultConfig.popular_title],
-        ['bl_title', config.bl_title || defaultConfig.bl_title],
-        ['gl_title', config.gl_title || defaultConfig.gl_title],
-        ['login_button', config.login_button || defaultConfig.login_button],
-        ['signup_button', config.signup_button || defaultConfig.signup_button],
-        ['guest_button', config.guest_button || defaultConfig.guest_button]
-      ])
-    };
-    
-    if (window.elementSdk) {
-      window.elementSdk.init(elementApi);
-    }
-    
-    initialize();
+    // Start app
+    initializeApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b5e97f045ca1a50',t:'MTc2NzA2Njg0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b6363bb14571a50',t:'MTc2NzExNzEzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
