@@ -444,13 +444,7 @@
                 });
               });
               
-              const previousCount = state.allRecords.length;
               state.allRecords = records;
-              
-              if (previousCount !== records.length && previousCount > 0) {
-                showToast('Datos sincronizados', 'info');
-              }
-              
               updateCurrentView();
             },
             (error) => {
@@ -512,7 +506,7 @@
       { id: 's7', title: 'Gameboys', genre: 'BL', country: 'Philippines', rating: 8.6, votes: 1543, year: 2020, episodes: 13, duration: '15min', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSnlI97k1RE1PMgpQjkYXwjBOZ7NlzX-jgIg&s', synopsis: 'Durante la cuarentena, Cairo y Gavreel desarrollan una conexión virtual que se convierte en algo más significativo.' },
       { id: 's8', title: 'Tsukutabe', genre: 'GL', country: 'Japan', rating: 8.4, votes: 876, year: 2020, episodes: 12, duration: '24min', image: 'https://i.mydramalist.com/x4m0ly_4f.jpg', synopsis: 'Nomoto disfruta cocinar para Kasuga, su vecina, y juntas descubren una conexión más profunda a través de la comida.' },
       { id: 's9', title: 'KinnPorsche', genre: 'BL', country: 'Thailand', rating: 8.9, votes: 2987, year: 2022, episodes: 14, duration: '60min', image: 'https://image.tmdb.org/t/p/original/bIm559uuYuP0TVh02T2u7eCj18A.jpg', synopsis: 'Un estudiante se convierte en guardaespaldas de un heredero mafioso, desarrollando una relación complicada en medio del peligro.' },
-      { id: 's10', title: 'Love Class', genre: 'BL', country: 'Korea', rating: 7.8, votes: 1234, year: 2022, episodes: 6, duration: '25min', image: 'https://1.vikiplatform.com/c/40050c/c31d19a60e.jpg?x=b', synopsis: 'Estudiantes universitarios exploran el amor y las relaciones en una clase sobre ese tema.' },
+      { id: 's10', title: 'Love Class', genre: 'BL', country: 'Korea', rating: 7.8, votes: 1234, year: 2022, episodes: 6, duration: '25min', image: 'https://i.redd.it/love-class-sequel-announced-by-studio-yanggwibi-love-class-v0-6sk22exi75f91.jpg?width=1447&format=pjpg&auto=webp&s=448fe73842719bf15b4680364dfda4f96310f8cd', synopsis: 'Estudiantes universitarios exploran el amor y las relaciones en una clase sobre ese tema.' },
       { id: 's11', title: 'Old Fashion Cupcake', genre: 'BL', country: 'Japan', rating: 9.1, votes: 1876, year: 2022, episodes: 5, duration: '24min', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbtFq-G6VfDKT0N5SuVa4PWuYNRvwlyq07vg&s', banner: 'https://1.vikiplatform.com/c/38580c/d1b8882fa1.jpg?x=b&a=0x0', synopsis: 'Un jefe de mediana edad y su subordinado más joven descubren nuevas perspectivas sobre la vida y el amor.', featured: true },
       { id: 's12', title: 'Show Me Love', genre: 'GL', country: 'Thailand', rating: 8.2, votes: 765, year: 2023, episodes: 9, duration: '45min', image: 'https://media.themoviedb.org/t/p/w116_and_h174_face/8QULpSnASKFjjxrMjWM9J1C1WdJ.jpg', synopsis: 'Dos mujeres de diferentes mundos se encuentran y desafían las expectativas sobre el amor y la identidad.' },
       { id: 's13', title: 'History 3 MODC', genre: 'BL', country: 'Taiwan', rating: 8.8, votes: 1432, year: 2019, episodes: 20, duration: '30min', image: 'https://i.mydramalist.com/233m7f.jpg', synopsis: 'Un policía encubierto se infiltra en una banda y desarrolla sentimientos complicados por el líder.' },
@@ -530,7 +524,7 @@
       { id: 's25', title: 'ABO Desire', genre: 'BL', country: 'Thailand', rating: 7.9, votes: 987, year: 2024, episodes: 8, duration: '30min', image: 'https://static.wikia.nocookie.net/drama/images/e/eb/ABO_Desire.jpg', banner: 'https://1.vikiplatform.com/c/41187c/59402231a4.jpg?x=b', synopsis: 'En un mundo donde existen alfas, betas y omegas, dos personas de diferentes castas desafían las normas sociales por amor.' },
       { id: 's26', title: 'The Untamed', genre: 'BL', country: 'China', rating: 9.5, votes: 5432, year: 2019, episodes: 50, duration: '45min', image: 'https://1.vikiplatform.com/c/36657c/41fea11291.jpg?x=b&a=0x0&s=480x270&e=t&q=g', banner: 'https://occ-0-8407-90.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABS9nACVh6wamSrXsKVSf1L-Eh34P5D3CktlZAgmvx1ka-3gUOigN0SL17BhNE8fw67PI4zKBOV4EttEAOogJPcNgNdezWeJOf55Z.jpg?r=a07', synopsis: 'Wei Wuxian y Lan Wangji se embarcan en una aventura épica de cultivo, misterio y una conexión que trasciende el tiempo.', featured: true },
       { id: 's27', title: 'Word of Honor', genre: 'BL', country: 'China', rating: 9.3, votes: 4321, year: 2021, episodes: 36, duration: '45min', image: 'https://i.mydramalist.com/BL0bV_4c.jpg', banner: 'https://occ-0-8407-2218.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABWjT-wXtgixdt0eqJitDKCPnvWZH4ZEz5YtNo-ShWXMbRBKMR9vE0h-vxpyU2FilvJ7r4uMjawzqQuNaS2vcMyOSWXIOhBUmiM0L.jpg?r=128', synopsis: 'Un asesino retirado y un líder de secta se unen para resolver un misterio mientras desarrollan una profunda amistad.', featured: true },
-      { id: 's28', title: 'Only Friends', genre: 'BL', country: 'Thailand', rating: 8.6, votes: 2876, year: 2023, episodes: 12, duration: '45min', image: 'https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Foriginal%2FlEvGrUKlQRKq5nf8eEYTEWv3a4O.jpg', banner: 'https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Foriginal%2FlEvGrUKlQRKq5nf8eEYTEWv3a4O.jpg', synopsis: 'Un grupo de amigos universitarios navega relaciones complicadas, triángulos amorosos y secretos que ponen a prueba su amistad.', featured: true },
+      { id: 's28', title: 'Only Friends', genre: 'BL', country: 'Thailand', rating: 8.6, votes: 2876, year: 2023, episodes: 12, duration: '45min', image: 'https://images.plex.tv/photo?size=large-1920&scale=1&url=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Foriginal%2FlEvGrUKlQRKq5nf8eEYTEWv3a4O.jpg', banner: 'https://i.ytimg.com/vi/lLa-WBBa35s/hq720.jpg?sqp=-oaymwEXCK4FEIIDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLB7mwuu4b5Y4J5mM1EIBnAH3KM9Kw', synopsis: 'Un grupo de amigos universitarios navega relaciones complicadas, triángulos amorosos y secretos que ponen a prueba su amistad.', featured: true },
       { id: 's29', title: 'Love By Chance', genre: 'BL', country: 'Thailand', rating: 8.5, votes: 3124, year: 2018, episodes: 14, duration: '45min', image: 'https://static.wikia.nocookie.net/drama/images/a/ad/Love_By_Chance-3.jpg', banner: 'https://pic8.iqiyipic.com/image/20250403/62/8d/a_100494437_m_601_en_m2_284_160.webp', synopsis: 'Ae, un estudiante común, conoce a Pete, un chico rico y tímido, comenzando una historia de amor que supera las diferencias sociales.' }
     ];
     
@@ -1630,10 +1624,13 @@
                 <div class="w-12 h-18 md:w-16 md:h-24 flex-shrink-0 rounded-lg overflow-hidden">
                   <img src="${series.image}" alt="${series.title}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                 </div>
-                <div>
+                <div class="flex-1">
                   <h1 class="text-xl md:text-2xl font-bold mb-1">Comunidad de ${series.title}</h1>
                   <p class="text-xs md:text-sm text-gray-400">${memberProfiles.length} miembros</p>
                 </div>
+                <button id="follow-community-btn" class="${communityMembers.find(m => m.user_profile === state.user?.uid) ? 'bg-gray-700 hover:bg-gray-600' : 'btn-gradient-bl-gl'} px-4 py-2 rounded-lg font-semibold text-sm transition hidden md:block">
+                  ${communityMembers.find(m => m.user_profile === state.user?.uid) ? '✓ Siguiendo' : '+ Seguir'}
+                </button>
               </div>
             </div>
           </header>
@@ -1708,6 +1705,41 @@
       document.getElementById('back-to-series').addEventListener('click', () => {
         navigateTo('series', series);
       });
+      
+      const followCommunityBtn = document.getElementById('follow-community-btn');
+      if (followCommunityBtn) {
+        followCommunityBtn.addEventListener('click', async () => {
+          if (state.isGuest) {
+            showToast('Inicia sesión para seguir', 'error');
+            return;
+          }
+          
+          const isFollowing = communityMembers.find(m => m.user_profile === state.user?.uid);
+          
+          if (isFollowing) {
+            await dataSdk.delete(isFollowing);
+            followCommunityBtn.textContent = '+ Seguir';
+            followCommunityBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+            followCommunityBtn.classList.add('btn-gradient-bl-gl');
+            showToast('Dejaste de seguir', 'info');
+          } else {
+            if (state.allRecords.length >= 999) {
+              showToast('Límite alcanzado', 'error');
+              return;
+            }
+            
+            await dataSdk.create({
+              my_list_series_id: series.id,
+              user_profile: state.user.uid
+            });
+            
+            followCommunityBtn.textContent = '✓ Siguiendo';
+            followCommunityBtn.classList.remove('btn-gradient-bl-gl');
+            followCommunityBtn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+            showToast('Siguiendo comunidad', 'success');
+          }
+        });
+      }
       
       document.getElementById('send-message-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -2445,5 +2477,5 @@
     // Start app
     initializeApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b839a1cf6db1a50',t:'MTc2NzQ1NDkwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b83adaab7131a50',t:'MTc2NzQ1NTcwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
