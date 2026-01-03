@@ -266,10 +266,22 @@
     // Firestore Data SDK Wrapper
     const firestoreDataSdk = {
       listeners: new Set(),
+      isInitialized: false,
       
       async create(record) {
         try {
-          if (!db || !state.user) return { isOk: false, isError: true, error: new Error('Database not available') };
+          if (!db) {
+            console.error('❌ Firestore no disponible');
+            showToast('Error: Base de datos no conectada', 'error');
+            return { isOk: false, isError: true, error: new Error('Database not available') };
+          }
+          
+          if (!state.user) {
+            console.error('❌ Usuario no autenticado');
+            return { isOk: false, isError: true, error: new Error('User not authenticated') };
+          }
+          
+          console.log('✅ Creando registro en Firestore:', record);
           
           const docRef = await db.collection('kyb_data').add({
             ...record,
@@ -277,77 +289,124 @@
             created_at: firebase.firestore.FieldValue.serverTimestamp()
           });
           
+          console.log('✅ Registro creado con ID:', docRef.id);
           return { isOk: true, isError: false, data: docRef.id };
         } catch (error) {
-          console.error('Firestore create error:', error);
+          console.error('❌ Firestore create error:', error);
+          showToast('Error al guardar: ' + error.message, 'error');
           return { isOk: false, isError: true, error };
         }
       },
       
       async update(record) {
         try {
-          if (!db || !record.__backendId) return { isOk: false, isError: true, error: new Error('Invalid record') };
+          if (!db) {
+            console.error('❌ Firestore no disponible');
+            showToast('Error: Base de datos no conectada', 'error');
+            return { isOk: false, isError: true, error: new Error('Database not available') };
+          }
           
-          const { __backendId, ...updateData } = record;
+          if (!record.__backendId) {
+            console.error('❌ Registro sin ID');
+            return { isOk: false, isError: true, error: new Error('Invalid record - missing ID') };
+          }
+          
+          console.log('✅ Actualizando registro:', record.__backendId);
+          
+          const { __backendId, created_at, ...updateData } = record;
           await db.collection('kyb_data').doc(__backendId).update({
             ...updateData,
             updated_at: firebase.firestore.FieldValue.serverTimestamp()
           });
           
+          console.log('✅ Registro actualizado');
           return { isOk: true, isError: false, data: null };
         } catch (error) {
-          console.error('Firestore update error:', error);
+          console.error('❌ Firestore update error:', error);
+          showToast('Error al actualizar: ' + error.message, 'error');
           return { isOk: false, isError: true, error };
         }
       },
       
       async delete(record) {
         try {
-          if (!db || !record.__backendId) return { isOk: false, isError: true, error: new Error('Invalid record') };
+          if (!db) {
+            console.error('❌ Firestore no disponible');
+            showToast('Error: Base de datos no conectada', 'error');
+            return { isOk: false, isError: true, error: new Error('Database not available') };
+          }
+          
+          if (!record.__backendId) {
+            console.error('❌ Registro sin ID');
+            return { isOk: false, isError: true, error: new Error('Invalid record - missing ID') };
+          }
+          
+          console.log('✅ Eliminando registro:', record.__backendId);
           
           await db.collection('kyb_data').doc(record.__backendId).delete();
           
+          console.log('✅ Registro eliminado');
           return { isOk: true, isError: false, data: null };
         } catch (error) {
-          console.error('Firestore delete error:', error);
+          console.error('❌ Firestore delete error:', error);
+          showToast('Error al eliminar: ' + error.message, 'error');
           return { isOk: false, isError: true, error };
         }
       },
       
       async init(handler) {
         try {
-          if (!db) return { isOk: false, isError: true, error: new Error('Database not available') };
+          if (!db) {
+            console.error('❌ Firebase no inicializado correctamente');
+            showToast('Error: No se pudo conectar a la base de datos', 'error');
+            return { isOk: false, isError: true, error: new Error('Database not available') };
+          }
+          
+          console.log('🔄 Inicializando Firestore listener...');
           
           this.listeners.add(handler);
           
-          // Listen to real-time updates
-          db.collection('kyb_data').onSnapshot((snapshot) => {
-            const records = [];
-            snapshot.forEach((doc) => {
-              records.push({
-                __backendId: doc.id,
-                ...doc.data()
+          // Listen to real-time updates with error handling
+          const unsubscribe = db.collection('kyb_data').onSnapshot(
+            (snapshot) => {
+              console.log('✅ Firestore snapshot recibido:', snapshot.size, 'documentos');
+              const records = [];
+              snapshot.forEach((doc) => {
+                records.push({
+                  __backendId: doc.id,
+                  ...doc.data()
+                });
               });
-            });
-            
-            state.allRecords = records;
-            
-            // Notify all listeners
-            this.listeners.forEach(listener => {
-              listener.onDataChanged(records);
-            });
-          });
+              
+              state.allRecords = records;
+              console.log('✅ Records actualizados:', records.length);
+              
+              // Notify all listeners
+              this.listeners.forEach(listener => {
+                listener.onDataChanged(records);
+              });
+              
+              this.isInitialized = true;
+            },
+            (error) => {
+              console.error('❌ Firestore listener error:', error);
+              showToast('Error de conexión con la base de datos', 'error');
+            }
+          );
           
+          console.log('✅ Firestore inicializado correctamente');
           return { isOk: true, isError: false, data: null };
         } catch (error) {
-          console.error('Firestore init error:', error);
+          console.error('❌ Firestore init error:', error);
+          showToast('Error al inicializar base de datos', 'error');
           return { isOk: false, isError: true, error };
         }
       }
     };
     
-    // Use Firestore as the active SDK (fallback to Canva SDK if available)
-    window.activeDataSdk = window.dataSdk || firestoreDataSdk;
+    // SIEMPRE usar Firestore en producción
+    window.activeDataSdk = firestoreDataSdk;
+    console.log('🚀 Sistema de datos configurado: FIRESTORE');
     
     // Default config
     const defaultConfig = {
@@ -2116,5 +2175,5 @@
     // Start app
     initializeApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b7eb9f052211a50',t:'MTc2NzQwMzc3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b7fa7c884e31a50',t:'MTc2NzQxMzUyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
